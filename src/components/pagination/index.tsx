@@ -11,16 +11,16 @@ export function Pagination({ pagination }: Props) {
   const { previousPage, setCurrentPage, nextPage, page } = usePagination();
 
   const totalPages = pagination ? pagination.totalPages : 0;
+  const startPage = Math.max(1, page - 4); 
+  const endPage = Math.min(totalPages, page + 5); 
 
-  const firstPages =
-    totalPages > 10
-      ? Array.from({ length: 8 })
-          .map((_, index) => index + 1)
-          .slice(-15)
-      : Array.from({ length: 15 }).map((_, index) => index + 1);
+  const displayedPages = Array.from({ length: endPage - startPage + 1 }).map(
+    (_, index) => startPage + index
+  )
 
-  const formattedPages =
-    totalPages > 10 ? [...firstPages, totalPages] : [...firstPages];
+  if (displayedPages[displayedPages.length - 1] !== totalPages) {
+    displayedPages.push(totalPages);
+  }
 
   const buttonCurrentPage = (selectedPage: number) => {
     return selectedPage === page ? styles.active : null;
@@ -33,7 +33,7 @@ export function Pagination({ pagination }: Props) {
         Anterior
       </button>
 
-      {formattedPages.map((page) => {
+      {displayedPages.map((page) => {
         return (
           <button
             key={page}

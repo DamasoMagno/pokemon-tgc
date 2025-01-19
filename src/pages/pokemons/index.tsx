@@ -3,7 +3,7 @@ import { Header } from "../../components/header";
 import { Search } from "../../components/search";
 import { Order } from "../../components/filter";
 import { useState } from "react";
-// import { Pagination } from "../../components/pagination";
+import { Pagination } from "../../components/pagination";
 import { usePagination } from "../../context/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPokemonCards } from "../../services/get-all-pokemons";
@@ -24,13 +24,13 @@ export function Pokemons() {
       getAllPokemonCards({ order, pokemon, selectedPage: page }),
   });
 
-  // const pagination = data?.pagination
-  //   ? data.pagination
-  //   : {
-  //       currentPage: 1,
-  //       totalCount: 16,
-  //       totalPages: 10,
-  //     };
+  const pagination = data?.pagination
+    ? data.pagination
+    : {
+        currentPage: 1,
+        totalCount: 16,
+        totalPages: 10,
+      };
 
   return (
     <>
@@ -46,7 +46,7 @@ export function Pokemons() {
           {ShowPokemonCards({ data, loading })}
 
           <footer>
-            {/* <Pagination pagination={pagination} /> */}
+            <Pagination pagination={pagination} />
           </footer>
         </main>
       </div>

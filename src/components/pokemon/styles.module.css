@@ -32,7 +32,7 @@
 
 
 
-.content header {
+.content > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -101,6 +101,19 @@
   align-items: center;
   gap: .5rem;
   justify-content: center;
+}
+
+.pokemonStatus div {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pokemonStatus header {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
 .pokemonStatus div span {

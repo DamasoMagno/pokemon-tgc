@@ -10,7 +10,7 @@ type Props = {
 
 export function Search({ onSearch, placeholder }: Props) {
   // Use the custom debounce hook to limit the search rate to 250ms
-  const debounce = useDebounce(250);
+  const debounce = useDebounce(500);
 
   const handleSearchPokemon = debounce((search: string) => {
     onSearch(search);

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import pokeBallImage from "../../assets/pokeball-icon.svg";
 
 import styles from "./styles.module.css";
 import { usePokemon } from "../../context/pokemon";
@@ -32,7 +33,7 @@ export function Pokemon() {
     <div className={styles.overlay} onClick={handleCloseOutside}>
       <main className={styles.content} ref={modalRef}>
         <header>
-          <strong>Bulbassur</strong>
+          <strong>{data?.name}</strong>
           <button onClick={handleCloseSelectPokemonModal}>
             <X />
           </button>
@@ -54,27 +55,74 @@ export function Pokemon() {
 
           <div className={styles.pokemonStatus}>
             <div>
-              <p>info</p>
-              <span>lorem ipsum</span>
+              <header>
+                <img src={pokeBallImage} alt="Pokebola" />
+                <p>info</p>
+              </header>
+              <span>{data?.hp} HP</span>
             </div>
+
             <div>
-              <p>info</p>
-              <span>lorem ipsum</span>
-            </div>
-            <div>
-              <p>info</p>
-              <span>lorem ipsum</span>
+              <header>
+                <img src={pokeBallImage} alt="Pokebola" />
+                <p>info</p>
+              </header>
+              {data?.weaknesses.map((weak) => (
+                <span key={weak.type}>
+                  {weak.type} {weak.value}
+                </span>
+              ))}
             </div>
           </div>
 
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat
-          </p>
+          <p>{data?.flavorText}</p>
         </div>
       </main>
     </div>
   );
 }
+
+// function Skeleton() {
+//   return (
+//     <>
+//       <header>
+//         <div />
+//         <button>
+//           <X />
+//         </button>
+//       </header>
+
+//       <div>
+//         <div className={styles.cardImage} />
+
+//         <div className={styles.pokemonTypes}>
+//           {Array.from({ length: 2 }).map((_, index) => (
+//             <span key={index} />
+//           ))}
+//         </div>
+
+//         <div className={styles.pokemonStatus}>
+//           <div>
+//             <header>
+//               <img src={pokeBallImage} alt="Pokebola" />
+//               <p>info</p>
+//             </header>
+//             <span />
+//           </div>
+
+//           <div>
+//             <header>
+//               <img src={pokeBallImage} alt="Pokebola" />
+//               <p>info</p>
+//             </header>
+//             {Array.from({ length: 2 }).map((_, index) => (
+//               <span key={index} />
+//             ))}
+//           </div>
+//         </div>
+
+//         <p />
+//       </div>
+//     </>
+//   );
+// }
