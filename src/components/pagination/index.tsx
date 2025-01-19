@@ -1,10 +1,12 @@
-import { Pagination as IPagination } from "../../types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { PaginationProps } from "@/types";
+import { usePagination } from "@/context/pagination";
+
 import styles from "./styles.module.css";
-import { usePagination } from "../../context/pagination";
 
 type Props = {
-  pagination?: IPagination;
+  pagination: PaginationProps;
 };
 
 export function Pagination({ pagination }: Props) {

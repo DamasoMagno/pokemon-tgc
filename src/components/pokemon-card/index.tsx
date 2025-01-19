@@ -1,10 +1,10 @@
 import { ComponentProps } from "react";
 
 import styles from "./styles.module.css";
-import { Pokemon } from "../../types";
+import { PokemonProps } from "../../types";
 
 type Props = ComponentProps<"button"> & {
-  pokemon: Pokemon;
+  pokemon: PokemonProps;
 };
 
 export function PokemonCard({ pokemon, ...props }: Props) {

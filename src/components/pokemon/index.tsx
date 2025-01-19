@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import pokeBallImage from "../../assets/pokeball-icon.svg";
+
+import { usePokemon } from "@/context/pokemon";
+
+import pokeBallImage from "@/assets/pokeball-icon.svg";
 
 import styles from "./styles.module.css";
-import { usePokemon } from "../../context/pokemon";
 
 export function Pokemon() {
   const { data, handleCloseSelectPokemonModal } = usePokemon();

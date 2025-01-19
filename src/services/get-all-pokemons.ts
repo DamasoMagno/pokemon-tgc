@@ -1,5 +1,5 @@
 import { api } from "../services/api";
-import { PokemonQuery } from "../types";
+import { PokemonQueryProps } from "../types";
 
 type Props = {
   pokemon: string;
@@ -17,7 +17,7 @@ export async function getAllPokemonCards({
     : `cards`;
 
   try {
-    const { data: response } = await api.get<PokemonQuery>(url, {
+    const { data: response } = await api.get<PokemonQueryProps>(url, {
       params: {
         pageSize: 20,
         page: selectedPage,

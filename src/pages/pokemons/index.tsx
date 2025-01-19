@@ -1,15 +1,19 @@
-import styles from "./styles.module.css";
-import { Header } from "../../components/header";
-import { Search } from "../../components/search";
-import { Order } from "../../components/filter";
 import { useState } from "react";
-import { Pagination } from "../../components/pagination";
-import { usePagination } from "../../context/pagination";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPokemonCards } from "../../services/get-all-pokemons";
-import { ShowPokemonCards } from "../../components/show-pokemon-cards";
-import { Pokemon } from "../../components/pokemon";
-import { usePokemon } from "../../context/pokemon";
+
+import { getAllPokemonCards } from "@/services/get-all-pokemons";
+
+import { usePokemon } from "@/context/pokemon";
+import { usePagination } from "@/context/pagination";
+
+import { Header } from "@/components/header";
+import { Search } from "@/components/search";
+import { Order } from "@/components/filter";
+import { Pagination } from "@/components/pagination";
+import { ShowPokemonCards } from "@/components/show-pokemon-cards";
+import { Pokemon } from "@/components/pokemon";
+
+import styles from "./styles.module.css";
 
 export function Pokemons() {
   const { page } = usePagination();
@@ -29,7 +33,7 @@ export function Pokemons() {
     : {
         currentPage: 1,
         totalCount: 16,
-        totalPages: 10,
+        totalPages: 100,
       };
 
   return (

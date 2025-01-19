@@ -1,22 +1,20 @@
-import pokeBallImage from "../../assets/pokeball-icon.svg";
-import styles from "./styles.module.css";
-import { Pokemon } from "../../types";
-import { PokemonCard } from "../pokemon-card";
-import { usePokemon } from "../../context/pokemon";
-import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
+import pokeBallImage from "@/assets/pokeball-icon.svg";
 
-type PokemonContent = {
-  pokemons: Pokemon[];
-  pagination: {
-    totalPages: number;
-    currentPage: number;
-    totalCount: number;
-  };
+import { PokemonCard } from "../pokemon-card";
+import { PaginationProps, PokemonProps } from "@/types";
+import { usePokemon } from "@/context/pokemon";
+
+import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
+import styles from "./styles.module.css";
+
+type PokemonCardDataProps = {
+  pokemons: PokemonProps[];
+  pagination: PaginationProps;
 };
 
 type Content = {
   loading: boolean;
-  data: PokemonContent | undefined;
+  data?: PokemonCardDataProps;
 };
 
 export function ShowPokemonCards({ loading, data }: Content) {

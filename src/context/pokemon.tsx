@@ -1,11 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useState } from "react";
-import { Pokemon as IPokemon } from "../types";
-import { getPokemonById } from "../services/get-pokemon-by-id";
+import { useQuery } from "@tanstack/react-query";
+
+import { PokemonProps } from "@/types";
+import { getPokemonById } from "@/services/get-pokemon-by-id";
 
 type PokemonContextProps = {
   open: boolean;
-  data: IPokemon | undefined;
+  data: PokemonProps | undefined;
   isLoading: boolean;
   handleOpenSelectPokemonModal: (pokemonId: string) => void;
   handleCloseSelectPokemonModal: () => void;

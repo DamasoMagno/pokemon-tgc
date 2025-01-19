@@ -1,4 +1,4 @@
-export type Pokemon = {
+export type PokemonProps = {
   artist: string;
   attacks: {
     cost: string[];
@@ -87,14 +87,14 @@ export type Pokemon = {
   }[];
 };
 
-export type PokemonQuery = {
-  data: Pokemon[];
+export type PokemonQueryProps = {
+  data: PokemonProps[];
   totalCount: number;
   pageSize: number;
   page: number;
 };
 
-export type Pagination = {
+export type PaginationProps = {
   totalPages: number;
   currentPage: number;
   totalCount: number;
