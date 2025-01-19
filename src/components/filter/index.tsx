@@ -1,5 +1,3 @@
-import { Search as SearchIcon } from "lucide-react";
-
 import styles from "./styles.module.css";
 
 type Props = {

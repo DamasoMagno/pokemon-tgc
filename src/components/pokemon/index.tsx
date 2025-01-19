@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 import { usePokemon } from "../../context/pokemon";
 
 export function Pokemon() {
-  const { data, isLoading, handleCloseSelectPokemonModal } = usePokemon();
+  const { data, handleCloseSelectPokemonModal } = usePokemon();
 
   const modalRef = useRef<HTMLDivElement>(null);
 

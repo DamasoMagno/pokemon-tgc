@@ -1,5 +1,4 @@
 import pokeBallImage from "../../assets/pokeball-icon.svg";
-import { Loader2 } from "lucide-react";
 import styles from "./styles.module.css";
 import { Pokemon } from "../../types";
 import { PokemonCard } from "../pokemon-card";
