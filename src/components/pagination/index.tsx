@@ -25,36 +25,31 @@ export function Pagination({ pagination }: Props) {
     return selectedPage === page ? styles.active : null;
   };
 
+  const updateDisplayedPages = () => {
+    const totalPages = pagination ? pagination.totalPages : 0;
+    let startPage: number = Math.max(1, page - 4);
+    let endPage: number = Math.min(totalPages, page + 5);
+
+    if (window.innerWidth < 728) {
+      startPage = Math.max(1, page - 2);
+      endPage = Math.min(totalPages, page + 2);
+    }
+
+    let formatted = Array.from({ length: endPage - startPage + 1 }).map(
+      (_, index) => startPage + index
+    );
+
+    if (formatted[formatted.length - 1] !== totalPages) {
+      formatted.push(totalPages);
+    }
+
+    setDisplayedPages(formatted);
+  };
+
   useEffect(() => {
-    const updateDisplayedPages = () => {
-      const totalPages = pagination ? pagination.totalPages : 0;
-      if (window.innerWidth < 728) {
-        const startPage = Math.max(1, page - 2);
-        const endPage = Math.min(totalPages, page + 2);
-
-        let formatted = Array.from({ length: endPage - startPage + 1 }).map(
-          (_, index) => startPage + index
-        );
-
-        if (formatted[formatted.length - 1] !== totalPages) {
-          formatted.push(totalPages);
-        }
-
-        setDisplayedPages(formatted);
-      } else {
-        const pagesToDisplay = formatPagination(totalPages, page);
-        setDisplayedPages(pagesToDisplay);
-      }
-    };
-
-    // Update pages on window resize
     window.addEventListener("resize", updateDisplayedPages);
 
-    // Call the function once to set the initial state
-    updateDisplayedPages();
-
     return () => {
-      // Clean up the event listener on component unmount
       window.removeEventListener("resize", updateDisplayedPages);
     };
   }, [pagination, page]);
