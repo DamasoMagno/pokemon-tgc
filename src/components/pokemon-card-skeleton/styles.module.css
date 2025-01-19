@@ -1,0 +1,80 @@
+.card {
+  overflow: hidden;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0px 0px 4px 1px rgba(137, 131, 131, 0.44);
+  position: relative;
+  border: 1.2px solid rgba(0, 0, 0, .25);
+  transform: translateY(0);
+  transition: transform 100ms ease-in-out;
+  height: 400px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardImage {
+  background-color: rgba(212, 215, 222, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImage img {
+  width: 100%;
+}
+
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  background-color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  width: 100%;
+  padding: 18px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, rgba(212, 215, 222, 1) 25%, rgba(239, 241, 244, 1) 50%, rgba(212, 215, 222, 1) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.skeletonLine {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(212, 215, 222, 1) 25%, rgba(239, 241, 244, 1) 50%, rgba(212, 215, 222, 1) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.skeletonLine.full {
+  flex: 1;
+}
+
+.skeletonLine.short {
+  width: 100%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
