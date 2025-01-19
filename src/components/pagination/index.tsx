@@ -4,6 +4,8 @@ import { PaginationProps } from "@/types";
 import { usePagination } from "@/context/pagination";
 
 import styles from "./styles.module.css";
+import { useEffect, useState } from "react";
+import { formatPagination } from "@/utils/format-pagination";
 
 type Props = {
   pagination: PaginationProps;
@@ -12,27 +14,56 @@ type Props = {
 export function Pagination({ pagination }: Props) {
   const { previousPage, setCurrentPage, nextPage, page } = usePagination();
 
-  const totalPages = pagination ? pagination.totalPages : 0;
-  const startPage = Math.max(1, page - 4); 
-  const endPage = Math.min(totalPages, page + 5); 
+  const [displayedPages, setDisplayedPages] = useState(() => {
+    const totalPages = pagination ? pagination.totalPages : 0;
+    const pagesToDisplay = formatPagination(totalPages, page);
 
-  const displayedPages = Array.from({ length: endPage - startPage + 1 }).map(
-    (_, index) => startPage + index
-  )
-
-  if (displayedPages[displayedPages.length - 1] !== totalPages) {
-    displayedPages.push(totalPages);
-  }
+    return pagesToDisplay;
+  });
 
   const buttonCurrentPage = (selectedPage: number) => {
     return selectedPage === page ? styles.active : null;
   };
 
+  useEffect(() => {
+    const updateDisplayedPages = () => {
+      const totalPages = pagination ? pagination.totalPages : 0;
+      if (window.innerWidth < 728) {
+        const startPage = Math.max(1, page - 2);
+        const endPage = Math.min(totalPages, page + 2);
+
+        let formatted = Array.from({ length: endPage - startPage + 1 }).map(
+          (_, index) => startPage + index
+        );
+
+        if (formatted[formatted.length - 1] !== totalPages) {
+          formatted.push(totalPages);
+        }
+
+        setDisplayedPages(formatted);
+      } else {
+        const pagesToDisplay = formatPagination(totalPages, page);
+        setDisplayedPages(pagesToDisplay);
+      }
+    };
+
+    // Update pages on window resize
+    window.addEventListener("resize", updateDisplayedPages);
+
+    // Call the function once to set the initial state
+    updateDisplayedPages();
+
+    return () => {
+      // Clean up the event listener on component unmount
+      window.removeEventListener("resize", updateDisplayedPages);
+    };
+  }, [pagination, page]);
+
   return (
     <ul className={styles.buttonsPage}>
       <button onClick={previousPage} className={styles.buttonPage}>
         <ChevronLeft />
-        Anterior
+        <span> Anterior</span>
       </button>
 
       {displayedPages.map((page) => {
@@ -49,7 +80,7 @@ export function Pagination({ pagination }: Props) {
         );
       })}
       <button onClick={nextPage} className={styles.buttonPage}>
-        Próximo
+        <span>Próximo</span>
         <ChevronRight />
       </button>
     </ul>

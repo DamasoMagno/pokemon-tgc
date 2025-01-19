@@ -9,10 +9,31 @@ body {
   background-color: #f9f9f9;
 }
 
-input, textarea, button {
+input,
+textarea,
+button {
   font-size: 1rem;
 }
 
 button {
   cursor: pointer;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  html {
+    font-size: .75rem;
+  }
+}
+
+/* Tablets em modo retrato (481px até 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: .85rem;
+  }
+}
+/* Desktops padrão (1025px até 1440px) */
+@media (min-width: 1025px) {
+  html {
+    font-size: 1rem;
+  }
 }

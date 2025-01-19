@@ -50,3 +50,9 @@
 .loading svg {
   animation: spin 500ms infinite;
 }
+
+@media (max-width: 768px) {
+  .buttonPage span {
+    display: none;
+  }
+}
