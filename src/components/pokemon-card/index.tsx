@@ -1,11 +1,11 @@
 import { ComponentProps } from "react";
 
-import { PokemonProps } from "@/types";
+import { FavoritedPokemonProps} from "@/types";
 
 import styles from "./styles.module.css";
 
 type Props = ComponentProps<"button"> & {
-  pokemon: PokemonProps;
+  pokemon: FavoritedPokemonProps;
 };
 
 export function PokemonCard({ pokemon, ...props }: Props) {
@@ -21,11 +21,7 @@ export function PokemonCard({ pokemon, ...props }: Props) {
       <div className={styles.cardContent}>
         <div className={styles.cardInfo}>
           <strong>{pokemon.name}</strong>
-        </div>
-
-        <div className={styles.cardInfo}>
-          <span>{pokemon.types}</span>
-          <span>{pokemon.rarity}</span>
+          <span>#{pokemon.id}</span>
         </div>
       </div>
     </button>

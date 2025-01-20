@@ -90,7 +90,9 @@ export type PokemonProps = {
 export type FavoritedPokemonProps = {
   id: string;
   name: string;
-  image: string;
+  images: {
+    small: string;
+  };
   types: string[];
 };
 

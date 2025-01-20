@@ -1,7 +1,7 @@
 import pokeBallImage from "@/assets/pokeball-icon.svg";
 
 import { PokemonCard } from "../pokemon-card";
-import { PaginationProps, PokemonProps } from "@/types";
+import { FavoritedPokemonProps, PaginationProps } from "@/types";
 import { usePokemon } from "@/context/pokemon";
 
 import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
@@ -9,16 +9,16 @@ import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
 import styles from "./styles.module.css";
 
 type PokemonCardDataProps = {
-  pokemons: PokemonProps[];
-  pagination: PaginationProps;
+  pokemons: FavoritedPokemonProps[];
+  pagination?: PaginationProps;
 };
 
 type Props = {
-  loading: boolean;
+  loading?: boolean;
   data?: PokemonCardDataProps;
 };
 
-export function ShowPokemonCards({ loading, data }: Props) {
+export function ShowPokemonCards({ loading = true, data }: Props) {
   const { handleOpenSelectPokemonModal } = usePokemon();
 
   if (loading) {
@@ -51,7 +51,7 @@ export function ShowPokemonCards({ loading, data }: Props) {
         <div className={styles.summary}>
           <img src={pokeBallImage} alt="Pokebola" />
           <p>
-            Total: <strong>{data?.pagination.totalCount} Pokémons</strong>
+            Total: <strong>{data?.pagination?.totalCount.toLocaleString("pt-BR")} Pokémons</strong>
           </p>
         </div>
         <ul className={styles.cards}>

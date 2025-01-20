@@ -12,6 +12,8 @@ export function Header() {
         </Link>
 
         <nav>
+          <Link to="/">Cartas</Link>
+          <Link to="/favorites">Favoritos</Link>
           <a
             className={styles.headerParagraph}
             href="https://docs.pokemontcg.io/"
@@ -19,9 +21,6 @@ export function Header() {
           >
             Documentação
           </a>
-          <Link to="/favorites">
-            Favoritos
-          </Link>
         </nav>
       </div>
     </header>

@@ -1,0 +1,13 @@
+.content {
+  margin-top: 1rem;
+  padding: 0 1rem;
+  margin: 0 auto;
+  max-width: 1219px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 360px 200px;
+  gap: 1rem;
+  margin: 2rem 0;
+}
