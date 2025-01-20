@@ -1,52 +1,61 @@
-import { useState } from "react";
-
+import { useMemo, useState } from "react";
 
 import { usePokemon } from "@/context/pokemon";
 
-import { Header } from "@/components/header";
-import { Pagination } from "@/components/pagination";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
+import { FavoritedPokemonProps } from "@/types";
+import { Search } from "@/components/search";
 
 export function Favorites() {
-  const { open, handleOpenSelectPokemonModal } = usePokemon();
-  const [pokemons,] = useState(() => {
-    const favorites = localStorage.getItem("@pokemontgc-favorites") || "[]";
-    return JSON.parse(favorites);
-  });
+  const { modalPokemonIsOpen, handleOpenSelectPokemonModal } = usePokemon();
+
+  const [pokemon, setPokemon] = useState("");
+
+  const filteredPokemons = useMemo(() => {
+    const favorites: FavoritedPokemonProps[] =
+      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
+
+    return favorites.filter((currentPokemon) =>
+      currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
+    );
+  }, [pokemon]);
 
   return (
     <>
       <div>
-        <Header />
-
         <main className={styles.content}>
           <div className={styles.filters}>
-            {/* <Search onSearch={setPokemon} placeholder="Pesquise um pokemon" /> */}
+            <Search onSearch={setPokemon} placeholder="Pesquise um pokemon" />
             {/* <Order onOrder={setOrder} /> */}
           </div>
 
           <ul>
-            {pokemons.map((pokemonId: string) => (
-              <li key={pokemonId}>
-                <button onClick={() => handleOpenSelectPokemonModal(pokemonId)}>
+            {filteredPokemons.map((pokemon) => (
+              <li key={pokemon.id}>
+                <button
+                  onClick={() => handleOpenSelectPokemonModal(pokemon.id)}
+                >
                   <img
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`}
-                    alt={pokemonId}
+                    src={pokemon.image}
+                    width={10}
+                    alt={`Carta pokemon de ${pokemon.name}`}
                   />
                 </button>
+                <p>{pokemon.name}</p>
+                <ul>
+                  {pokemon.types.map((pokemon) => (
+                    <li key={pokemon}>{pokemon}</li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
-
-          <footer>
-            <Pagination />
-          </footer>
         </main>
       </div>
 
-      {open && <Pokemon />}
+      {modalPokemonIsOpen && <Pokemon />}
     </>
   );
 }

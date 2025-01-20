@@ -1,18 +1,23 @@
 .header {
-  box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(65, 64, 64, .1);
 }
 
 .headerContent {
-  padding: 0 1rem;
+  padding: 1.5rem 1rem;
   max-width: 1219px;
   margin: 0 auto;
   display: flex;
-  height: 146px;
   align-items: center;
   justify-content: space-between;
 }
 
-.headerParagraph {
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+a {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 400;

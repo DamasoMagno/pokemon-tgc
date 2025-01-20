@@ -33,16 +33,15 @@
 }
 
 .filters {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 360px 200px;
+  gap: 1rem;
   margin: 2rem 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 580px) {
   .filters {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: repeat(1, 1fr);
     gap: .5rem;
   }
 }

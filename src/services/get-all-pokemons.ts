@@ -3,8 +3,8 @@ import { PokemonQueryProps } from "../types";
 
 type Props = {
   params: {
-    pokemon: string;
-    order: string;
+    pokemon?: string;
+    order?: string;
   };
   selectedPage: number;
   setTotalPageCount: (pages: number) => void;

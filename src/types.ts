@@ -87,6 +87,14 @@ export type PokemonProps = {
   }[];
 };
 
+export type FavoritedPokemonProps = {
+  id: string;
+  name: string;
+  image: string;
+  types: string[];
+};
+
+
 export type PokemonQueryProps = {
   data: PokemonProps[];
   totalCount: number;

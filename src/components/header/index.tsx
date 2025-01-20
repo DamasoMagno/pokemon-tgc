@@ -1,7 +1,7 @@
+import { Link } from "react-router-dom";
 import logoImage from "@/assets/logo.svg";
 
 import styles from "./styles.module.css";
-import { Link } from "react-router-dom";
 
 export function Header() {
   return (
@@ -10,7 +10,19 @@ export function Header() {
         <Link to="/">
           <img src={logoImage} alt="Logotipo Pokémon" />
         </Link>
-        <a className={styles.headerParagraph} href="https://docs.pokemontcg.io/" target="_blank">Documentação</a>
+
+        <nav>
+          <a
+            className={styles.headerParagraph}
+            href="https://docs.pokemontcg.io/"
+            target="_blank"
+          >
+            Documentação
+          </a>
+          <Link to="/favorites">
+            Favoritos
+          </Link>
+        </nav>
       </div>
     </header>
   );

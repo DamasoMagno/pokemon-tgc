@@ -10,7 +10,7 @@ type PaginationContextProps = {
   setTotalPageCount: (page: number) => void;
 };
 
-type DetailsProviderProps = {
+type PaginationProviderProps = {
   children: React.ReactNode;
 };
 
@@ -23,13 +23,13 @@ export const PaginationContext = createContext<PaginationContextProps>({
   setTotalPageCount: () => {},
 });
 
-export function PaginationProvider({ children }: DetailsProviderProps) {
-  const [searchParams, setSearchParams] = useSearchParams()
+export function PaginationProvider({ children }: PaginationProviderProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(0);
 
   const page = Number(searchParams.get("page")) || 1
 
-  const previousPage = () => {
+  const setPeviousPage = () => {
     if (page > 1) {
       setSearchParams((state) => {
         state.set("page", String(page - 1))
@@ -38,7 +38,7 @@ export function PaginationProvider({ children }: DetailsProviderProps) {
     }
   };
 
-  const nextPage = () => {
+  const setNextPage = () => {
     setSearchParams((state) => {
       state.set("page", String(page + 1))
       return state
@@ -61,9 +61,9 @@ export function PaginationProvider({ children }: DetailsProviderProps) {
       value={{
         totalPages,
         setTotalPageCount,
-        nextPage,
+        nextPage: setNextPage,
         page,
-        previousPage,
+        previousPage: setPeviousPage,
         setCurrentPage: setCustomPage,
       }}
     >

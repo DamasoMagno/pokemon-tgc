@@ -6,7 +6,6 @@ import { getAllPokemonCards } from "@/services/get-all-pokemons";
 import { usePokemon } from "@/context/pokemon";
 import { usePagination } from "@/context/pagination";
 
-import { Header } from "@/components/header";
 import { Search } from "@/components/search";
 import { Order } from "@/components/filter";
 import { Pagination } from "@/components/pagination";
@@ -16,9 +15,9 @@ import { Pokemon } from "@/components/pokemon";
 import styles from "./styles.module.css";
 
 export function Pokemons() {
-  const { page, setTotalPageCount } = usePagination();
-  const { open } = usePokemon();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { page, setTotalPageCount } = usePagination();
+  const { modalPokemonIsOpen } = usePokemon();
 
   const pokemon = searchParams.get("pokemon") as string;
   const order = searchParams.get("order") as string;
@@ -67,8 +66,6 @@ export function Pokemons() {
   return (
     <>
       <div>
-        <Header />
-
         <main className={styles.content}>
           <div className={styles.filters}>
             <Search
@@ -86,7 +83,7 @@ export function Pokemons() {
         </main>
       </div>
 
-      {open && <Pokemon />}
+      {modalPokemonIsOpen && <Pokemon />}
     </>
   );
 }

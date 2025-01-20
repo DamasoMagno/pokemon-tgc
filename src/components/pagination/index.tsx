@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { usePagination } from "@/context/pagination";
 
 import styles from "./styles.module.css";
-import { useEffect, useState } from "react";
 
 export function Pagination() {
   const { previousPage, setCurrentPage, nextPage, page, totalPages } =

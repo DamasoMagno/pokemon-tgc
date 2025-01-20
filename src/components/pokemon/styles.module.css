@@ -60,7 +60,7 @@
 }
 
 .cardImage {
-  background-color: rgba(212, 215, 222, 1);
+  background-color: rgba(0, 0, 0, 1); 
   border-radius: 16px;
   height: 260px;
   width: 200px;
@@ -75,6 +75,7 @@
 .cardImage img {
   width: 100%;
   object-fit: cover;
+  background-color: rgba(248, 247, 216, 0.7);
 }
 
 .pokemonTypes {

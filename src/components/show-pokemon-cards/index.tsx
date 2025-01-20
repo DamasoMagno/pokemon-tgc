@@ -5,6 +5,7 @@ import { PaginationProps, PokemonProps } from "@/types";
 import { usePokemon } from "@/context/pokemon";
 
 import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
+
 import styles from "./styles.module.css";
 
 type PokemonCardDataProps = {
@@ -12,12 +13,12 @@ type PokemonCardDataProps = {
   pagination: PaginationProps;
 };
 
-type Content = {
+type Props = {
   loading: boolean;
   data?: PokemonCardDataProps;
 };
 
-export function ShowPokemonCards({ loading, data }: Content) {
+export function ShowPokemonCards({ loading, data }: Props) {
   const { handleOpenSelectPokemonModal } = usePokemon();
 
   if (loading) {

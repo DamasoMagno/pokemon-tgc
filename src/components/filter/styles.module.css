@@ -1,17 +1,27 @@
-.searchContainer {
+.selectContainer {
   display: flex;
   align-items: center;
   gap: .5rem;
-  padding: 0 .5rem;
-  border-radius: .5rem;
+  padding: 0rem .5rem;
+  border-radius: 12px;
+  height: 2.5rem;
   border: 1px solid rgba(171, 171, 171, 1);
-  width: 100%;
-  max-width: 368px;
 }
 
-.inputSearch {
-  border: 0;
+.selectPokemon {
   background-color: transparent;
+  flex: 1;
+  color: rgba(151, 151, 151, 1);
+  height: 100%;
   outline: 0;
-  padding: .5rem;
+  border: 0;
+  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
+.selectPokemon:focus {
+  border-color: rgba(7, 7, 7, 1);
 }

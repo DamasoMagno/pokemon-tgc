@@ -1,17 +1,29 @@
-import { useEffect, useRef } from "react";
-import { Share, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Heart, Share, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { usePokemon } from "@/context/pokemon";
+import { Skeleton } from "../pokemon-skeleton";
 
 import pokeBallImage from "@/assets/pokeball-icon.svg";
 
 import styles from "./styles.module.css";
-import { Skeleton } from "../pokemon-skeleton";
-import { useNavigate } from "react-router-dom";
+
+type FavoritedPokemonProps = {
+  id: string;
+  name: string;
+  image: string;
+  types: string[];
+};
 
 export function Pokemon() {
   const navigate = useNavigate();
   const { data, isLoading, handleCloseSelectPokemonModal } = usePokemon();
+  const [favorite, setFavorite] = useState(() => {
+    const storagedFavoritePokemons: FavoritedPokemonProps[] =
+      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
+    return storagedFavoritePokemons.some((pokemon) => pokemon.id === data?.id);
+  });
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -34,9 +46,39 @@ export function Pokemon() {
       handleCloseSelectPokemonModal();
   };
 
+  const handleAddPokemonToFavorite = () => {
+    if (!data) return;
+
+    let storagedFavoritePokemons: FavoritedPokemonProps[] =
+      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
+
+    const checkPokemonStatus = storagedFavoritePokemons.find(
+      (pokemon) => pokemon.id === data.id
+    );
+
+    if (!checkPokemonStatus) {
+      const pokemonFavorited: FavoritedPokemonProps = {
+        id: data?.id,
+        name: data?.name,
+        image: data?.images.large,
+        types: data?.types.map((type) => type),
+      };
+
+      storagedFavoritePokemons.push(pokemonFavorited);
+      setFavorite(true);
+    } else {
+      storagedFavoritePokemons = storagedFavoritePokemons.filter((pokemon) => pokemon.id !== data.id);
+      setFavorite(false);
+    }
+
+    localStorage.setItem(
+      "@tcg:pokemons",
+      JSON.stringify(storagedFavoritePokemons)
+    );
+  };
+
   const handleNavigateToPokemonDetails = () => {
     handleCloseSelectPokemonModal();
-
     navigate(`/pokemon/${data?.id}`);
   };
 
@@ -48,6 +90,9 @@ export function Pokemon() {
         <header>
           <button onClick={handleNavigateToPokemonDetails}>
             <Share />
+          </button>
+          <button onClick={handleAddPokemonToFavorite}>
+            {favorite ? <Heart color="red" /> : <Heart />}
           </button>
           <strong>{data?.name}</strong>
           <button onClick={handleCloseSelectPokemonModal}>

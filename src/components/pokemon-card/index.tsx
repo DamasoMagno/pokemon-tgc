@@ -1,7 +1,8 @@
 import { ComponentProps } from "react";
 
+import { PokemonProps } from "@/types";
+
 import styles from "./styles.module.css";
-import { PokemonProps } from "../../types";
 
 type Props = ComponentProps<"button"> & {
   pokemon: PokemonProps;
