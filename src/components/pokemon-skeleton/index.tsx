@@ -33,9 +33,7 @@ export function Skeleton() {
                 <div className={styles.skeletonIcon}></div>
                 <div className={styles.skeletonText}></div>
               </header>
-              {[...Array(2)].map((_, index) => (
-                <div key={index} className={styles.skeletonText}></div>
-              ))}
+              <div className={styles.skeletonText}></div>
             </div>
           </div>
 

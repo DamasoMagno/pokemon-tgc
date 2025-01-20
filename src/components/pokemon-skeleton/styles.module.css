@@ -169,12 +169,12 @@
   position: relative;
 }
 
-.pokemonStatus div:not(:last-child):after {
+.pokemonStatus > div:not(:last-child):after {
   width: 1.35px;
   border-radius: 24px;
   content: "";
-  right: -50%;
-  transform: translateX(100%);
+  right: -100%;
+  transform: translateX(-50%);
   top: 0;
   height: 100%;
   position: absolute;

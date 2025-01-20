@@ -7,13 +7,13 @@ type Props = {
     order: string;
   };
   selectedPage: number;
-  setPages: (pages: number) => void;
+  setTotalPageCount: (pages: number) => void;
 };
 
 export async function getAllPokemonCards({
   selectedPage,
   params,
-  setPages,
+  setTotalPageCount,
 }: Props) {
   let url: string;
 
@@ -26,8 +26,6 @@ export async function getAllPokemonCards({
   } else {
     url = `cards`;
   }
-
-  console.log(url)
 
   try {
     const { data: response } = await api.get<PokemonQueryProps>(url, {
@@ -43,7 +41,7 @@ export async function getAllPokemonCards({
       totalCount: response.totalCount,
     };
 
-    setPages(pagination.totalPages);
+    setTotalPageCount(pagination.totalPages);
 
     return {
       pokemons: response.data,

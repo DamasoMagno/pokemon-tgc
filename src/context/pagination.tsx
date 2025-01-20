@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type PaginationContextProps = {
   totalPages: number;
@@ -6,7 +7,7 @@ type PaginationContextProps = {
   previousPage: VoidFunction;
   nextPage: VoidFunction;
   setCurrentPage: (page: number) => void;
-  setPages: (page: number) => void;
+  setTotalPageCount: (page: number) => void;
 };
 
 type DetailsProviderProps = {
@@ -19,55 +20,49 @@ export const PaginationContext = createContext<PaginationContextProps>({
   nextPage: () => {},
   previousPage: () => {},
   setCurrentPage: () => {},
-  setPages: () => {},
+  setTotalPageCount: () => {},
 });
 
 export function PaginationProvider({ children }: DetailsProviderProps) {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [totalPages, setTotalPages] = useState(0);
-  const searchParams = new URLSearchParams(window.location.search);
 
-  const [pagination, setPagination] = useState(
-    () => Number(searchParams.get("pagination")) || 1
-  );
-
-  const updateURL = () => {
-    searchParams.set("pagination", String(pagination));
-
-    const baseURL = window.location.origin + window.location.pathname;
-    const newURL = `${baseURL}?${searchParams.toString()}`;
-
-    window.history.pushState(null, "", newURL);
-  };
-
-  useEffect(() => {
-    updateURL();
-  }, [pagination]);
+  const page = Number(searchParams.get("page")) || 1
 
   const previousPage = () => {
-    if (pagination > 1) {
-      setPagination((state) => state - 1);
+    if (page > 1) {
+      setSearchParams((state) => {
+        state.set("page", String(page - 1))
+        return state
+      })
     }
   };
 
   const nextPage = () => {
-    setPagination((state) => state + 1);
+    setSearchParams((state) => {
+      state.set("page", String(page + 1))
+      return state
+    })
   };
 
   const setCustomPage = (page: number) => {
-    setPagination(page);
+    setSearchParams((state) => {
+      state.set("page", String(page))
+      return state
+    })
   };
 
-  const setPages = (pages: number) => {
-    setTotalPages(pages);
-  };
+  const setTotalPageCount = (pageCount: number) => {
+    setTotalPages(pageCount);
+  }
 
   return (
     <PaginationContext.Provider
       value={{
         totalPages,
-        setPages,
+        setTotalPageCount,
         nextPage,
-        page: pagination,
+        page,
         previousPage,
         setCurrentPage: setCustomPage,
       }}
