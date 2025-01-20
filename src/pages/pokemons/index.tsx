@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 import { getAllPokemonCards } from "@/services/get-all-pokemons";
 
@@ -13,7 +14,6 @@ import { ShowPokemonCards } from "@/components/show-pokemon-cards";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
-import { useSearchParams } from "react-router-dom";
 
 export function Pokemons() {
   const { page, setTotalPageCount } = usePagination();
@@ -23,14 +23,28 @@ export function Pokemons() {
   const pokemon = searchParams.get("pokemon") as string;
   const order = searchParams.get("order") as string;
 
-  const handleFilterPokemon = (key: string, value: string) => {
+  const handleSearchPokemon = (pokemon: string) => {
     setSearchParams((state) => {
-      if (key && value) {
-        state.set(key, value);
-      } else if (key && value === "") {
-        state.delete(key);
+      if (pokemon) {
+        state.set("pokemon", pokemon);
+        state.set("page", "1");
       } else {
-        state.delete(key);
+        state.delete("pokemon");
+      }
+
+      return state;
+    });
+  };
+
+  const handleShowPokemonByOrder = (
+    order: string | React.SyntheticEvent<HTMLSelectElement, Event>
+  ) => {
+    setSearchParams((state) => {
+      if (order) {
+        state.set("order", order as string);
+        state.set("page", "1");
+      } else {
+        state.delete("order");
       }
 
       return state;
@@ -58,10 +72,10 @@ export function Pokemons() {
         <main className={styles.content}>
           <div className={styles.filters}>
             <Search
-              onSearch={(e) => handleFilterPokemon("pokemon", e)}
+              onSearch={handleSearchPokemon}
               placeholder="Pesquise um pokemon"
             />
-            <Order onSelect={(e) => handleFilterPokemon("pokemon", e as string)} />
+            <Order onSelect={handleShowPokemonByOrder} />
           </div>
 
           {ShowPokemonCards({ data, loading })}

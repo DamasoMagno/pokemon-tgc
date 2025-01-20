@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { Share, X } from "lucide-react";
 
 import { usePokemon } from "@/context/pokemon";
 
@@ -7,8 +7,10 @@ import pokeBallImage from "@/assets/pokeball-icon.svg";
 
 import styles from "./styles.module.css";
 import { Skeleton } from "../pokemon-skeleton";
+import { useNavigate } from "react-router-dom";
 
 export function Pokemon() {
+  const navigate = useNavigate();
   const { data, isLoading, handleCloseSelectPokemonModal } = usePokemon();
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -32,12 +34,21 @@ export function Pokemon() {
       handleCloseSelectPokemonModal();
   };
 
+  const handleNavigateToPokemonDetails = () => {
+    handleCloseSelectPokemonModal();
+
+    navigate(`/pokemon/${data?.id}`);
+  };
+
   return isLoading ? (
     <Skeleton />
   ) : (
     <div className={styles.overlay} onClick={handleCloseOutside}>
       <main className={styles.content} ref={modalRef}>
         <header>
+          <button onClick={handleNavigateToPokemonDetails}>
+            <Share />
+          </button>
           <strong>{data?.name}</strong>
           <button onClick={handleCloseSelectPokemonModal}>
             <X />
