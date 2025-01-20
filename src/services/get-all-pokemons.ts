@@ -2,19 +2,32 @@ import { api } from "../services/api";
 import { PokemonQueryProps } from "../types";
 
 type Props = {
-  pokemon: string;
-  order: string;
+  params: {
+    pokemon: string;
+    order: string;
+  };
   selectedPage: number;
+  setPages: (pages: number) => void;
 };
 
 export async function getAllPokemonCards({
   selectedPage,
-  pokemon,
-  order,
+  params,
+  setPages,
 }: Props) {
-  let url = pokemon
-    ? `cards?q=name:${pokemon}*&orderBy=${order}`
-    : `cards`;
+  let url: string;
+
+  if (params.pokemon && params.order) {
+    url = `cards?q=name:${params.pokemon}*&orderBy=${params.order}`;
+  } else if (params.pokemon) {
+    url = `cards?q=name:${params.pokemon}*`;
+  } else if (params.order) {
+    url = `cards?orderBy=${params.order}`;
+  } else {
+    url = `cards`;
+  }
+
+  console.log(url)
 
   try {
     const { data: response } = await api.get<PokemonQueryProps>(url, {
@@ -29,6 +42,8 @@ export async function getAllPokemonCards({
       currentPage: response.page,
       totalCount: response.totalCount,
     };
+
+    setPages(pagination.totalPages);
 
     return {
       pokemons: response.data,

@@ -6,9 +6,10 @@ import { usePokemon } from "@/context/pokemon";
 import pokeBallImage from "@/assets/pokeball-icon.svg";
 
 import styles from "./styles.module.css";
+import { Skeleton } from "../pokemon-skeleton";
 
 export function Pokemon() {
-  const { data, handleCloseSelectPokemonModal } = usePokemon();
+  const { data, isLoading, handleCloseSelectPokemonModal } = usePokemon();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +32,9 @@ export function Pokemon() {
       handleCloseSelectPokemonModal();
   };
 
-  return (
+  return isLoading ? (
+    <Skeleton />
+  ) : (
     <div className={styles.overlay} onClick={handleCloseOutside}>
       <main className={styles.content} ref={modalRef}>
         <header>
@@ -77,54 +80,11 @@ export function Pokemon() {
             </div>
           </div>
 
-          <p>{data?.flavorText}</p>
+          <div className={styles.details}>
+            <p>{data?.flavorText}</p>
+          </div>
         </div>
       </main>
     </div>
   );
 }
-
-// function Skeleton() {
-//   return (
-//     <>
-//       <header>
-//         <div />
-//         <button>
-//           <X />
-//         </button>
-//       </header>
-
-//       <div>
-//         <div className={styles.cardImage} />
-
-//         <div className={styles.pokemonTypes}>
-//           {Array.from({ length: 2 }).map((_, index) => (
-//             <span key={index} />
-//           ))}
-//         </div>
-
-//         <div className={styles.pokemonStatus}>
-//           <div>
-//             <header>
-//               <img src={pokeBallImage} alt="Pokebola" />
-//               <p>info</p>
-//             </header>
-//             <span />
-//           </div>
-
-//           <div>
-//             <header>
-//               <img src={pokeBallImage} alt="Pokebola" />
-//               <p>info</p>
-//             </header>
-//             {Array.from({ length: 2 }).map((_, index) => (
-//               <span key={index} />
-//             ))}
-//           </div>
-//         </div>
-
-//         <p />
-//       </div>
-//     </>
-//   );
-// }

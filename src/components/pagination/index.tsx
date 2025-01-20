@@ -1,39 +1,28 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { PaginationProps } from "@/types";
 import { usePagination } from "@/context/pagination";
 
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
-import { formatPagination } from "@/utils/format-pagination";
 
-type Props = {
-  pagination: PaginationProps;
-};
-
-export function Pagination({ pagination }: Props) {
-  const { previousPage, setCurrentPage, nextPage, page } = usePagination();
-
-  const [displayedPages, setDisplayedPages] = useState(() => {
-    const totalPages = pagination ? pagination.totalPages : 0;
-    const pagesToDisplay = formatPagination(totalPages, page);
-
-    return pagesToDisplay;
-  });
+export function Pagination() {
+  const { previousPage, setCurrentPage, nextPage, page, totalPages } =
+    usePagination();
+  const [countPages, setCountPages] = useState<number[]>([]);
 
   const buttonCurrentPage = (selectedPage: number) => {
     return selectedPage === page ? styles.active : null;
   };
 
-  const updateDisplayedPages = () => {
-    const totalPages = pagination ? pagination.totalPages : 0;
-    let startPage: number = Math.max(1, page - 4);
-    let endPage: number = Math.min(totalPages, page + 5);
+  const setCountPageByDisplaySize = () => {
+    let pageCount = 4;
 
     if (window.innerWidth < 728) {
-      startPage = Math.max(1, page - 2);
-      endPage = Math.min(totalPages, page + 2);
+      pageCount = 2;
     }
+
+    let startPage: number = Math.max(1, page - pageCount);
+    let endPage: number = Math.min(totalPages, page + pageCount);
 
     let formatted = Array.from({ length: endPage - startPage + 1 }).map(
       (_, index) => startPage + index
@@ -43,25 +32,35 @@ export function Pagination({ pagination }: Props) {
       formatted.push(totalPages);
     }
 
-    setDisplayedPages(formatted);
+    if(formatted[0] !== 1){
+      formatted.unshift(1);
+    }
+
+    setCountPages(formatted);
   };
 
   useEffect(() => {
-    window.addEventListener("resize", updateDisplayedPages);
+    setCountPageByDisplaySize();
+
+    window.addEventListener("resize", setCountPageByDisplaySize);
 
     return () => {
-      window.removeEventListener("resize", updateDisplayedPages);
+      window.removeEventListener("resize", setCountPageByDisplaySize);
     };
-  }, [pagination, page]);
+  }, [totalPages, page]);
 
   return (
     <ul className={styles.buttonsPage}>
-      <button onClick={previousPage} className={styles.buttonPage}>
+      <button
+        onClick={previousPage}
+        className={styles.buttonPage}
+        disabled={page === 1}
+      >
         <ChevronLeft />
         <span> Anterior</span>
       </button>
 
-      {displayedPages.map((page) => {
+      {countPages.map((page) => {
         return (
           <button
             key={page}
@@ -74,7 +73,11 @@ export function Pagination({ pagination }: Props) {
           </button>
         );
       })}
-      <button onClick={nextPage} className={styles.buttonPage}>
+      <button
+        onClick={nextPage}
+        className={styles.buttonPage}
+        disabled={page === totalPages}
+      >
         <span>Próximo</span>
         <ChevronRight />
       </button>

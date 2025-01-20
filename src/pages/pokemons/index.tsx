@@ -16,25 +16,26 @@ import { Pokemon } from "@/components/pokemon";
 import styles from "./styles.module.css";
 
 export function Pokemons() {
-  const { page } = usePagination();
+  const { page, setPages } = usePagination();
   const { open } = usePokemon();
 
   const [pokemon, setPokemon] = useState("");
   const [order, setOrder] = useState("");
 
+  console.log(order)
+
   const { data, isLoading: loading } = useQuery({
     queryKey: ["pokemons", pokemon, order, page],
     queryFn: async () =>
-      getAllPokemonCards({ order, pokemon, selectedPage: page }),
+      getAllPokemonCards({
+        params: {
+          order,
+          pokemon,
+        },
+        selectedPage: page,
+        setPages,
+      }),
   });
-
-  const pagination = data?.pagination
-    ? data.pagination
-    : {
-        currentPage: 1,
-        totalCount: 16,
-        totalPages: 100,
-      };
 
   return (
     <>
@@ -50,7 +51,7 @@ export function Pokemons() {
           {ShowPokemonCards({ data, loading })}
 
           <footer>
-            <Pagination pagination={pagination} />
+            <Pagination />
           </footer>
         </main>
       </div>

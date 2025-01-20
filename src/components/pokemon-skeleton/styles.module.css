@@ -1,0 +1,89 @@
+/* Skeleton Loader Base */
+.skeleton {
+  position: relative;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 0) 0%,
+    rgba(240, 240, 240, 0.5) 50%,
+    rgba(240, 240, 240, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+/* Skeleton Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Skeleton Components */
+.skeletonTitle {
+  height: 20px;
+  width: 50%;
+  margin: 0 auto 16px;
+  background-color: #e0e0e0;
+}
+
+.skeletonButton {
+  height: 16px;
+  width: 16px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+}
+
+.skeletonImage {
+  height: 260px;
+  width: 200px;
+  margin: 0 auto;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+}
+
+.skeletonBadge {
+  height: 20px;
+  width: 60px;
+  margin: 4px;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  display: inline-block;
+}
+
+.skeletonIcon {
+  height: 24px;
+  width: 24px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.skeletonText {
+  height: 16px;
+  width: 80%;
+  background-color: #e0e0e0;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+
+.skeletonParagraph {
+  height: 12px;
+  width: 100%;
+  background-color: #e0e0e0;
+  margin: 8px 0;
+  border-radius: 4px;
+}
