@@ -8,7 +8,7 @@ type PokemonContextProps = {
   modalPokemonIsOpen: boolean;
   data: PokemonProps | undefined;
   isFavorite: boolean | undefined;
-  handleAddPokemonToFavorite: VoidFunction;
+  addPokemonToFavorites: (data: PokemonProps | undefined) => void;
   isLoading: boolean;
   handleOpenSelectPokemonModal: (pokemonId: string) => void;
   handleCloseSelectPokemonModal: () => void;
@@ -25,6 +25,7 @@ export const PokemonContext = createContext<PokemonContextProps>(
 export function PokemonProvider({ children }: PokemonProviderProps) {
   const [pokemonId, setPokemonId] = useState("");
   const [modalPokemonIsOpen, setModalPokemonIsOpen] = useState(false);
+  const [favorite, setFavorite] = useState(false);
 
   const handleOpenSelectPokemonModal = (pokemonId: string) => {
     setModalPokemonIsOpen(true);
@@ -36,7 +37,7 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
     setPokemonId("");
   };
 
-  const handleAddPokemonToFavorite = () => {
+  const addPokemonToFavorites = (data: PokemonProps | undefined) => {
     if (!data) return;
 
     let storagedFavoritePokemons: FavoritedPokemonProps[] =
@@ -51,7 +52,7 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
         id: data?.id,
         name: data?.name,
         images: {
-          small: data?.images.small
+          small: data?.images.small,
         },
         types: data?.types.map((type) => type),
       };
@@ -59,7 +60,9 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
       storagedFavoritePokemons.push(pokemonFavorited);
       setFavorite(true);
     } else {
-      storagedFavoritePokemons = storagedFavoritePokemons.filter((pokemon) => pokemon.id !== data.id);
+      storagedFavoritePokemons = storagedFavoritePokemons.filter(
+        (pokemon) => pokemon.id !== data.id
+      );
       setFavorite(false);
     }
 
@@ -71,15 +74,8 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
 
   const { data, isLoading } = useQuery({
     queryKey: ["pokemon", pokemonId],
-    queryFn: () => getPokemonById(pokemonId),
+    queryFn: () => getPokemonById({pokemonId, setFavorite: setFavorite}),
     enabled: modalPokemonIsOpen && !!pokemonId,
-  });
-
-  const [favorite, setFavorite] = useState(() => {
-    const storagedFavoritePokemons: FavoritedPokemonProps[] =
-      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
-      
-    return storagedFavoritePokemons.some((pokemon) => pokemon.id === data?.id);
   });
 
   return (
@@ -87,7 +83,7 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
       value={{
         modalPokemonIsOpen,
         isFavorite: favorite,
-        handleAddPokemonToFavorite,
+        addPokemonToFavorites,
         data,
         isLoading,
         handleCloseSelectPokemonModal,

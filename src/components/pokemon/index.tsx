@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Heart, Share, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Heart, X } from "lucide-react";
 
 import { usePokemon } from "@/context/pokemon";
 import { Skeleton } from "../pokemon-skeleton";
@@ -10,8 +9,13 @@ import pokeBallImage from "@/assets/pokeball-icon.svg";
 import styles from "./styles.module.css";
 
 export function Pokemon() {
-  const navigate = useNavigate();
-  const { data, isLoading, handleCloseSelectPokemonModal, isFavorite, handleAddPokemonToFavorite } = usePokemon();
+  const {
+    data,
+    isLoading,
+    handleCloseSelectPokemonModal,
+    isFavorite,
+    addPokemonToFavorites,
+  } = usePokemon();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -34,10 +38,7 @@ export function Pokemon() {
       handleCloseSelectPokemonModal();
   };
 
-  const handleNavigateToPokemonDetails = () => {
-    handleCloseSelectPokemonModal();
-    navigate(`/pokemon/${data?.id}`);
-  };
+  const handleAddPokemonToFavorites = () => addPokemonToFavorites(data);
 
   return isLoading ? (
     <Skeleton />
@@ -45,11 +46,8 @@ export function Pokemon() {
     <div className={styles.overlay} onClick={handleCloseOutside}>
       <main className={styles.content} ref={modalRef}>
         <header>
-          <button onClick={handleNavigateToPokemonDetails}>
-            <Share />
-          </button>
-          <button onClick={handleAddPokemonToFavorite}>
-            {isFavorite ? <Heart color="red" fill="red"/> : <Heart />}
+          <button onClick={handleAddPokemonToFavorites}>
+            {isFavorite ? <Heart color="red" fill="red" /> : <Heart />}
           </button>
           <strong>{data?.name}</strong>
           <button onClick={handleCloseSelectPokemonModal}>

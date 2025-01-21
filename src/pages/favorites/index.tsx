@@ -13,7 +13,7 @@ import { usePagination } from "@/context/pagination";
 
 export function Favorites() {
   const { setTotalPageCount, page, totalPages } = usePagination();
-  const { modalPokemonIsOpen } = usePokemon();
+  const { modalPokemonIsOpen, isFavorite } = usePokemon();
 
   const [pokemon, setPokemon] = useState("");
   const itemPerPage = 20;
@@ -25,7 +25,7 @@ export function Favorites() {
     return favorites.filter((currentPokemon) =>
       currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
     );
-  }, [pokemon, page]);
+  }, [pokemon, page, isFavorite]);
 
   const paginatedPokemons = useMemo(() => {
     const startIndex = (page - 1) * itemPerPage;
@@ -51,7 +51,7 @@ export function Favorites() {
             pagination: {
               currentPage: page,
               totalCount: filteredPokemons.length,
-              totalPages,
+              totalPages: totalPages,
             },
           },
           loading: false,

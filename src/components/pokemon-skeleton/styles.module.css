@@ -98,8 +98,8 @@
 }
 
 .skeletonIcon {
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 64px;
   background-color: #e0e0e0;
   border-radius: 50%;
   margin-right: 8px;
