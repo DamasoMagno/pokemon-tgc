@@ -54,6 +54,7 @@ export function Pokemon() {
             <X />
           </button>
         </header>
+
         <div>
           <div className={styles.cardImage}>
             <img
@@ -69,7 +70,23 @@ export function Pokemon() {
             ))}
           </div>
 
-          <div className={styles.pokemonStatus}>
+          <div>
+            <div>
+              <span>HP</span>
+              <strong>{data?.hp}</strong>
+            </div>
+            <div>
+              <span>Fraquezas</span>
+              {data?.weaknesses.map((weak) => (
+                <strong key={weak.type}>
+                  {weak.type} {weak.value}
+                </strong>
+              ))}
+              <strong>{data?.hp}</strong>
+            </div>
+          </div>
+          <div 
+          className={styles.pokemonStatus}>
             <div>
               <header>
                 <img src={pokeBallImage} alt="Pokebola" />
@@ -83,11 +100,7 @@ export function Pokemon() {
                 <img src={pokeBallImage} alt="Pokebola" />
                 <p>info</p>
               </header>
-              {data?.weaknesses.map((weak) => (
-                <span key={weak.type}>
-                  {weak.type} {weak.value}
-                </span>
-              ))}
+             
             </div>
           </div>
 

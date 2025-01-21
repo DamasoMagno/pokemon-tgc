@@ -1,31 +1,31 @@
 import pokeBallImage from "@/assets/pokeball-icon.svg";
 
-import { PokemonCard } from "../pokemon-card";
 import { FavoritedPokemonProps, PaginationProps } from "@/types";
+import { PokemonCard } from "@/components/pokemon-card";
 import { usePokemon } from "@/context/pokemon";
 
-import { PokemonCardSkeleton } from "../pokemon-card-skeleton";
+import { PokemonCardSkeleton } from "@/components/pokemon-card-skeleton";
 
 import styles from "./styles.module.css";
 
 type PokemonCardDataProps = {
   pokemons: FavoritedPokemonProps[];
-  pagination?: PaginationProps;
+  pagination: PaginationProps;
 };
 
 type Props = {
-  loading?: boolean;
+  loading: boolean;
   data?: PokemonCardDataProps;
 };
 
-export function ShowPokemonCards({ loading = true, data }: Props) {
+export function PokemonCards({ loading, data }: Props) {
   const { handleOpenSelectPokemonModal } = usePokemon();
 
   if (loading) {
     return (
       <div>
         <div className={styles.summary}>
-          <img src={pokeBallImage} alt="Pokebola"  />
+          <img src={pokeBallImage} alt="Pokebola" />
           <p>
             Total: <strong>0 Pokémons</strong>
           </p>
@@ -51,7 +51,10 @@ export function ShowPokemonCards({ loading = true, data }: Props) {
         <div className={styles.summary}>
           <img src={pokeBallImage} alt="Pokebola" />
           <p>
-            Total: <strong>{data?.pagination?.totalCount.toLocaleString("pt-BR")} Pokémons</strong>
+            Total:{" "}
+            <strong>
+              {data?.pagination?.totalCount.toLocaleString("pt-BR")} Pokémons
+            </strong>
           </p>
         </div>
         <ul className={styles.cards}>

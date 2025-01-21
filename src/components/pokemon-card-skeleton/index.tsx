@@ -11,8 +11,8 @@ export function PokemonCardSkeleton() {
         </div>
 
         <div className={styles.cardInfo}>
-          <div className={`${styles.skeletonLine} ${styles.short}`} />
-          <div className={`${styles.skeletonLine} ${styles.short}`} />
+          <div className={`${styles.short}`} />
+          <div className={`${styles.short}`} />
         </div>
       </div>
     </button>

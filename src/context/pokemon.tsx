@@ -74,7 +74,7 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
 
   const { data, isLoading } = useQuery({
     queryKey: ["pokemon", pokemonId],
-    queryFn: () => getPokemonById({pokemonId, setFavorite: setFavorite}),
+    queryFn: () => getPokemonById({ pokemonId, setFavorite }),
     enabled: modalPokemonIsOpen && !!pokemonId,
   });
 

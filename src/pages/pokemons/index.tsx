@@ -9,7 +9,7 @@ import { usePagination } from "@/context/pagination";
 import { Search } from "@/components/search";
 import { Order } from "@/components/filter";
 import { Pagination } from "@/components/pagination";
-import { ShowPokemonCards } from "@/components/show-pokemon-cards";
+import { PokemonCards } from "./components/pokemon-cards";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
@@ -61,7 +61,10 @@ export function Pokemons() {
         selectedPage: page,
         setTotalPageCount,
       }),
+    refetchOnWindowFocus: true
   });
+
+  console.log(data, loading)
 
   return (
     <>
@@ -75,7 +78,7 @@ export function Pokemons() {
             <Order onSelect={handleShowPokemonByOrder} />
           </div>
 
-          {ShowPokemonCards({ data, loading })}
+          {PokemonCards({ data, loading })}
 
           <footer>
             <Pagination />

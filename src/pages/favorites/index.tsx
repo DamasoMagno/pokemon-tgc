@@ -1,22 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { FavoritedPokemonProps } from "@/types";
+
+import { usePagination } from "@/context/pagination";
 import { usePokemon } from "@/context/pokemon";
 
+import { Search } from "@/components/search";
+import { FavoritePokemonCards } from "./components/favorite-pokemon-cards";
+import { Pagination } from "@/components/pagination";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
-import { FavoritedPokemonProps } from "@/types";
-import { Search } from "@/components/search";
-import { ShowPokemonCards } from "@/components/show-pokemon-cards";
-import { Pagination } from "@/components/pagination";
-import { usePagination } from "@/context/pagination";
 
 export function Favorites() {
-  const { setTotalPageCount, page, totalPages } = usePagination();
+  const { setTotalPageCount, page } = usePagination();
   const { modalPokemonIsOpen, isFavorite } = usePokemon();
 
   const [pokemon, setPokemon] = useState("");
-  const itemPerPage = 20;
+
+  const itemsPerPage = 20;
+  const skipPokemons = (page - 1) * itemsPerPage;
+  const currentPokemons = skipPokemons + itemsPerPage;
 
   const filteredPokemons = useMemo(() => {
     const favorites: FavoritedPokemonProps[] =
@@ -25,17 +29,19 @@ export function Favorites() {
     return favorites.filter((currentPokemon) =>
       currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
     );
-  }, [pokemon, page, isFavorite]);
+  }, [pokemon, isFavorite]);
 
-  const paginatedPokemons = useMemo(() => {
-    const startIndex = (page - 1) * itemPerPage;
-    const endIndex = startIndex + itemPerPage;
+  const paginatedPokemons = filteredPokemons.slice(
+    skipPokemons,
+    currentPokemons
+  );
 
-    return filteredPokemons.slice(startIndex, endIndex);
-  }, [filteredPokemons, page]);
+  const formattedTotalPages = Math.ceil(filteredPokemons.length / itemsPerPage);
+
+  console.log("Here");
 
   useEffect(() => {
-    setTotalPageCount(Math.ceil(filteredPokemons.length / itemPerPage));
+    setTotalPageCount(formattedTotalPages >= 1 ? formattedTotalPages : 1);
   }, []);
 
   return (
@@ -45,16 +51,9 @@ export function Favorites() {
           <Search onSearch={setPokemon} placeholder="Pesquise um pokemon" />
         </div>
 
-        {ShowPokemonCards({
-          data: {
-            pokemons: paginatedPokemons,
-            pagination: {
-              currentPage: page,
-              totalCount: filteredPokemons.length,
-              totalPages: totalPages,
-            },
-          },
-          loading: false,
+        {FavoritePokemonCards({
+          totalCount: filteredPokemons.length,
+          pokemons: paginatedPokemons,
         })}
 
         <footer>
