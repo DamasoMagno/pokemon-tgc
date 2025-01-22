@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { FavoritedPokemonProps } from "@/types";
 
@@ -17,27 +17,30 @@ export function Favorites() {
   const { pokemonId, isFavorite } = usePokemon();
 
   const [pokemon, setPokemon] = useState("");
+  const [favoritePokemons, setFavoritePokemons] = useState<
+    FavoritedPokemonProps[]
+  >([]);
+
+  useEffect(() => {
+    const favorites: FavoritedPokemonProps[] =
+      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
+
+    setFavoritePokemons(favorites);
+  }, [isFavorite]);
+
+  const filteredPokemons = useMemo(() => {
+    return favoritePokemons.filter((currentPokemon) =>
+      currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
+    );
+  }, [pokemon, favoritePokemons]);
 
   const itemsPerPage = 20;
   const skipPokemons = (page - 1) * itemsPerPage;
   const currentPokemons = skipPokemons + itemsPerPage;
-
-  const filteredPokemons = useMemo(() => {
-    const favorites: FavoritedPokemonProps[] =
-      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
-
-    return favorites.filter((currentPokemon) =>
-      currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
-    );
-  }, [pokemon, isFavorite]);
-
   const formattedTotalPages = Math.ceil(filteredPokemons.length / itemsPerPage);
   const totalCountPokemons = filteredPokemons.length;
 
-  const pokemons = filteredPokemons.slice(
-    skipPokemons,
-    currentPokemons
-  );
+  const pokemons = filteredPokemons.slice(skipPokemons, currentPokemons);
 
   return (
     <>
@@ -51,9 +54,11 @@ export function Favorites() {
           pokemons,
         })}
 
-        <footer>
-          <Pagination totalPages={formattedTotalPages} />
-        </footer>
+        {formattedTotalPages >= 1 && (
+          <footer>
+            <Pagination totalPages={formattedTotalPages} />
+          </footer>
+        )}
       </main>
 
       {!!pokemonId && <Pokemon />}

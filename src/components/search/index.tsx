@@ -12,7 +12,7 @@ type Props = ComponentProps<"input"> & {
 export function Search({ onSearch, ...props }: Props) {
   // Use the custom debounce hook to limit the search rate to 250ms
   const debounce = useDebounce(500);
-  
+
   const handleSearchPokemon = debounce((search: string) => {
     onSearch(search);
   });
@@ -22,6 +22,8 @@ export function Search({ onSearch, ...props }: Props) {
       <input
         type="text"
         className={styles.inputSearch}
+        aria-label="Pesquise um pokemon"
+        placeholder="Pesquise um pokemon"
         onChange={(e) => handleSearchPokemon(e.target.value)}
         {...props}
       />

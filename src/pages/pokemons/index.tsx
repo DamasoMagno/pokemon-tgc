@@ -35,7 +35,7 @@ export function Pokemons() {
     });
   };
 
-  const handleShowPokemonByOrder = (
+  const handleOrderPokemons = (
     order: string | React.SyntheticEvent<HTMLSelectElement, Event>
   ) => {
     setSearchParams((state) => {
@@ -64,23 +64,18 @@ export function Pokemons() {
 
   return (
     <>
-      <div>
-        <main className={styles.content}>
-          <div className={styles.filters}>
-            <Search
-              onSearch={handleSearchPokemon}
-              placeholder="Pesquise um pokemon"
-            />
-            <Order onSelect={handleShowPokemonByOrder} />
-          </div>
+      <main className={styles.content}>
+        <div className={styles.filters}>
+          <Search onSearch={handleSearchPokemon} />
+          <Order onSelect={handleOrderPokemons} />
+        </div>
 
-          {PokemonCards({ data, loading })}
+        {PokemonCards({ data, loading })}
 
-          <footer>
-            <Pagination totalPages={data?.pagination.totalPages ?? 1} />
-          </footer>
-        </main>
-      </div>
+        <footer>
+          <Pagination totalPages={data?.pagination.totalPages ?? 1} />
+        </footer>
+      </main>
 
       {!!pokemonId && <Pokemon />}
     </>
