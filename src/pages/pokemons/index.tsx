@@ -16,8 +16,8 @@ import styles from "./styles.module.css";
 
 export function Pokemons() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, setTotalPageCount } = usePagination();
-  const { modalPokemonIsOpen } = usePokemon();
+  const { page } = usePagination();
+  const { pokemonId } = usePokemon();
 
   const pokemon = searchParams.get("pokemon") as string;
   const order = searchParams.get("order") as string;
@@ -58,13 +58,9 @@ export function Pokemons() {
           order,
           pokemon,
         },
-        selectedPage: page,
-        setTotalPageCount,
+        page,
       }),
-    refetchOnWindowFocus: true
   });
-
-  console.log(data, loading)
 
   return (
     <>
@@ -81,12 +77,12 @@ export function Pokemons() {
           {PokemonCards({ data, loading })}
 
           <footer>
-            <Pagination />
+            <Pagination totalPages={data?.pagination.totalPages ?? 1} />
           </footer>
         </main>
       </div>
 
-      {modalPokemonIsOpen && <Pokemon />}
+      {!!pokemonId && <Pokemon />}
     </>
   );
 }

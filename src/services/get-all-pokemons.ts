@@ -6,16 +6,12 @@ type Props = {
     pokemon?: string;
     order?: string;
   };
-  selectedPage: number;
-  setTotalPageCount: (pages: number) => void;
+  page: number;
 };
 
-export async function getAllPokemonCards({
-  selectedPage,
-  params,
-  setTotalPageCount,
-}: Props) {
+export async function getAllPokemonCards({ page, params }: Props) {
   let url: string;
+  const pageSize = 20;
 
   if (params.pokemon && params.order) {
     url = `cards?q=name:${params.pokemon}*&orderBy=${params.order}`;
@@ -30,8 +26,8 @@ export async function getAllPokemonCards({
   try {
     const { data: response } = await api.get<PokemonQueryProps>(url, {
       params: {
-        pageSize: 20,
-        page: selectedPage,
+        pageSize,
+        page,
       },
     });
 
@@ -40,8 +36,6 @@ export async function getAllPokemonCards({
       currentPage: response.page,
       totalCount: response.totalCount,
     };
-
-    setTotalPageCount(pagination.totalPages);
 
     return {
       pokemons: response.data,

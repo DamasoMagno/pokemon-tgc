@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { FavoritedPokemonProps } from "@/types";
 
@@ -13,8 +13,8 @@ import { Pokemon } from "@/components/pokemon";
 import styles from "./styles.module.css";
 
 export function Favorites() {
-  const { setTotalPageCount, page } = usePagination();
-  const { modalPokemonIsOpen, isFavorite } = usePokemon();
+  const { page } = usePagination();
+  const { pokemonId, isFavorite } = usePokemon();
 
   const [pokemon, setPokemon] = useState("");
 
@@ -31,18 +31,13 @@ export function Favorites() {
     );
   }, [pokemon, isFavorite]);
 
-  const paginatedPokemons = filteredPokemons.slice(
+  const formattedTotalPages = Math.ceil(filteredPokemons.length / itemsPerPage);
+  const totalCountPokemons = filteredPokemons.length;
+
+  const pokemons = filteredPokemons.slice(
     skipPokemons,
     currentPokemons
   );
-
-  const formattedTotalPages = Math.ceil(filteredPokemons.length / itemsPerPage);
-
-  console.log("Here");
-
-  useEffect(() => {
-    setTotalPageCount(formattedTotalPages >= 1 ? formattedTotalPages : 1);
-  }, []);
 
   return (
     <>
@@ -52,16 +47,16 @@ export function Favorites() {
         </div>
 
         {FavoritePokemonCards({
-          totalCount: filteredPokemons.length,
-          pokemons: paginatedPokemons,
+          totalCountPokemons,
+          pokemons,
         })}
 
         <footer>
-          <Pagination />
+          <Pagination totalPages={formattedTotalPages} />
         </footer>
       </main>
 
-      {modalPokemonIsOpen && <Pokemon />}
+      {!!pokemonId && <Pokemon />}
     </>
   );
 }

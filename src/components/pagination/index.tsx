@@ -5,8 +5,12 @@ import { usePagination } from "@/context/pagination";
 
 import styles from "./styles.module.css";
 
-export function Pagination() {
-  const { previousPage, setCurrentPage, nextPage, page, totalPages } =
+type Props = {
+  totalPages: number
+}
+
+export function Pagination({ totalPages }: Props) {
+  const { previousPage, setCurrentPage, nextPage, page } =
     usePagination();
   const [countPages, setCountPages] = useState<number[]>([]);
 
@@ -15,10 +19,10 @@ export function Pagination() {
   };
 
   const setCountPageByDisplaySize = () => {
-    let pageCount = 4;
+    let pageCount = 3;
 
     if (window.innerWidth < 728) {
-      pageCount = 2;
+      pageCount = 1;
     }
 
     let startPage: number = Math.max(1, page - pageCount);

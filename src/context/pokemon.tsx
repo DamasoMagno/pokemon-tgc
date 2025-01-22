@@ -5,8 +5,8 @@ import { FavoritedPokemonProps, PokemonProps } from "@/types";
 import { getPokemonById } from "@/services/get-pokemon-by-id";
 
 type PokemonContextProps = {
-  modalPokemonIsOpen: boolean;
   data: PokemonProps | undefined;
+  pokemonId: string;
   isFavorite: boolean | undefined;
   addPokemonToFavorites: (data: PokemonProps | undefined) => void;
   isLoading: boolean;
@@ -24,16 +24,13 @@ export const PokemonContext = createContext<PokemonContextProps>(
 
 export function PokemonProvider({ children }: PokemonProviderProps) {
   const [pokemonId, setPokemonId] = useState("");
-  const [modalPokemonIsOpen, setModalPokemonIsOpen] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
   const handleOpenSelectPokemonModal = (pokemonId: string) => {
-    setModalPokemonIsOpen(true);
     setPokemonId(pokemonId);
   };
 
   const handleCloseSelectPokemonModal = () => {
-    setModalPokemonIsOpen(false);
     setPokemonId("");
   };
 
@@ -75,14 +72,14 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
   const { data, isLoading } = useQuery({
     queryKey: ["pokemon", pokemonId],
     queryFn: () => getPokemonById({ pokemonId, setFavorite }),
-    enabled: modalPokemonIsOpen && !!pokemonId,
+    enabled: !!pokemonId,
   });
 
   return (
     <PokemonContext.Provider
       value={{
-        modalPokemonIsOpen,
         isFavorite: favorite,
+        pokemonId,
         addPokemonToFavorites,
         data,
         isLoading,

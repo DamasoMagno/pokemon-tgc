@@ -8,10 +8,10 @@ import styles from "./styles.module.css";
 
 type Props = {
   pokemons: FavoritedPokemonProps[];
-  totalCount: number;
+  totalCountPokemons: number;
 };
 
-export function FavoritePokemonCards({ pokemons, totalCount }: Props) {
+export function FavoritePokemonCards({ pokemons, totalCountPokemons }: Props) {
   const { handleOpenSelectPokemonModal } = usePokemon();
 
   return pokemons.length === 0 ? (
@@ -25,7 +25,7 @@ export function FavoritePokemonCards({ pokemons, totalCount }: Props) {
         <p>
           Total:{" "}
           <strong>
-            {totalCount.toLocaleString("pt-BR")} Pokémons
+            {totalCountPokemons.toLocaleString("pt-BR")} Pokémons
           </strong>
         </p>
       </div>
