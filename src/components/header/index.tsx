@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
-import logoImage from "@/assets/logo.svg";
 
 import styles from "./styles.module.css";
 
+import logoImage from "@/assets/logo.svg";
+import { useAuthStore } from "@/store/authStore";
+
 export function Header() {
+  const { user, signOut, authenticate } = useAuthStore();
+
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
@@ -21,6 +25,12 @@ export function Header() {
           >
             Documentação
           </a>
+          <button
+            className={styles.signIn}
+            onClick={user?.id ? signOut : authenticate}
+          >
+            {user?.id ? "Sair" : "Entrar"}
+          </button>
         </nav>
       </div>
     </header>

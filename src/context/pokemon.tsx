@@ -1,14 +1,22 @@
 import { createContext, useContext, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/services/supabase";
 
-import { FavoritedPokemonProps, PokemonProps } from "@/types";
+import {
+  FavoritedPokemonProps,
+  FavoritePokemonSupabase,
+  PokemonProps,
+} from "@/types";
 import { getPokemonById } from "@/services/get-pokemon-by-id";
+import { useAuthStore } from "@/store/authStore";
+import { User } from "@supabase/supabase-js";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type PokemonContextProps = {
   data: PokemonProps | undefined;
   pokemonId: string;
   isFavorite: boolean | undefined;
-  addPokemonToFavorites: (data: PokemonProps | undefined) => void;
+  handleAddPokemonToFavorite: (data: PokemonProps | undefined) => void;
   isLoading: boolean;
   handleOpenSelectPokemonModal: (pokemonId: string) => void;
   handleCloseSelectPokemonModal: () => void;
@@ -22,23 +30,30 @@ export const PokemonContext = createContext<PokemonContextProps>(
   {} as PokemonContextProps
 );
 
+type PokemonFavoriteProps = {
+  user?: User | null;
+  data?: PokemonProps | undefined;
+  storageMode: "offline" | "online";
+};
+
 export function PokemonProvider({ children }: PokemonProviderProps) {
+  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
+  const { getLocalStorage, setLocalStorage } = useLocalStorage("@tcg:pokemons");
+
   const [pokemonId, setPokemonId] = useState("");
   const [favorite, setFavorite] = useState(false);
 
-  const handleOpenSelectPokemonModal = (pokemonId: string) => {
+  const handleOpenSelectPokemonModal = (pokemonId: string) =>
     setPokemonId(pokemonId);
-  };
 
-  const handleCloseSelectPokemonModal = () => {
-    setPokemonId("");
-  };
+  const handleCloseSelectPokemonModal = () => setPokemonId("");
 
-  const addPokemonToFavorites = (data: PokemonProps | undefined) => {
+  const togglePokemonFavoriteStatusOffline = (data: PokemonProps | undefined) => {
     if (!data) return;
 
     let storagedFavoritePokemons: FavoritedPokemonProps[] =
-      JSON.parse(localStorage.getItem("@tcg:pokemons") as string) || [];
+      getLocalStorage() || [];
 
     const checkPokemonStatus = storagedFavoritePokemons.find(
       (pokemon) => pokemon.id === data.id
@@ -51,7 +66,6 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
         images: {
           small: data?.images.small,
         },
-        types: data?.types.map((type) => type),
       };
 
       storagedFavoritePokemons.push(pokemonFavorited);
@@ -63,15 +77,104 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
       setFavorite(false);
     }
 
-    localStorage.setItem(
-      "@tcg:pokemons",
-      JSON.stringify(storagedFavoritePokemons)
-    );
+    setLocalStorage(storagedFavoritePokemons);
+  };
+
+  const { mutateAsync: togglePokemonFavoriteStatusOnline } = useMutation({
+    mutationFn: async (data: PokemonProps | undefined) => {
+      try {
+        if (!data) return;
+
+        const { data: pokemonExists } = await supabase
+          .from("favorite")
+          .select()
+          .eq("user_id", user?.id)
+          .eq("card_id", data.id)
+          .single();
+
+        if (pokemonExists) {
+          await supabase.from("favorite").delete().eq("id", pokemonExists.id);
+          setFavorite(false);
+
+          return;
+        }
+
+        const pokemon = {
+          card_id: data.id,
+          card_name: data.name,
+          card_image: data.images.large,
+          user_id: user?.id,
+        };
+
+        await supabase.from("favorite").insert(pokemon);
+        setFavorite(true);
+      } catch (error) {}
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["favorite-pokemons"],
+      });
+    },
+  });
+
+  const handleAddPokemonToFavorite = async (data: PokemonProps | undefined) => {
+    if (user) {
+      await togglePokemonFavoriteStatusOnline(data);
+    } else {
+      togglePokemonFavoriteStatusOffline(data);
+    }
+  };
+
+  const pokemonIsFavorited = async ({
+    data,
+    storageMode,
+    user,
+  }: PokemonFavoriteProps) => {
+    try {
+      switch (storageMode) {
+        case "offline":
+          const storagedFavoritePokemons: FavoritedPokemonProps[] =
+            getLocalStorage() || [];
+
+          setFavorite(() => {
+            return storagedFavoritePokemons.some(
+              (pokemon) => pokemon.id === data?.id
+            );
+          });
+          break;
+        case "online":
+          const {
+            data: favoritePokemons,
+          }: { data: FavoritePokemonSupabase[] | null } = await supabase
+            .from("favorite")
+            .select()
+            .eq("user_id", user?.id);
+
+          if (!favoritePokemons?.length) return [];
+
+          setFavorite(() => {
+            return favoritePokemons.some((card) => card.card_id === data?.id);
+          });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["pokemon", pokemonId],
-    queryFn: () => getPokemonById({ pokemonId, setFavorite }),
+    queryKey: ["pokemon", pokemonId, user],
+    queryFn: async () => {
+      const storageMode: "offline" | "online" = user ? "online" : "offline";
+      const data = await getPokemonById({ pokemonId });
+
+      await pokemonIsFavorited({
+        data,
+        storageMode,
+        user,
+      });
+
+      return data;
+    },
     enabled: !!pokemonId,
   });
 
@@ -80,7 +183,7 @@ export function PokemonProvider({ children }: PokemonProviderProps) {
       value={{
         isFavorite: favorite,
         pokemonId,
-        addPokemonToFavorites,
+        handleAddPokemonToFavorite,
         data,
         isLoading,
         handleCloseSelectPokemonModal,

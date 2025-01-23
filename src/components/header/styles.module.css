@@ -24,3 +24,14 @@ a {
   line-height: 1.9;
   color: rgba(65, 64, 64, 1);
 }
+
+.signIn {
+  background-color: #006239;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .5rem 2rem;
+  border: 1px solid green;
+  color: #FAFAFA;
+}

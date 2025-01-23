@@ -9,7 +9,7 @@ import { PokemonCardSkeleton } from "@/components/pokemon-card-skeleton";
 import styles from "./styles.module.css";
 
 type PokemonCardDataProps = {
-  pokemons: FavoritedPokemonProps[];
+  pokemons?: FavoritedPokemonProps[];
   pagination: PaginationProps;
 };
 
@@ -39,7 +39,7 @@ export function PokemonCards({ loading, data }: Props) {
     );
   }
 
-  if (data?.pokemons.length === 0) {
+  if (data?.pokemons?.length === 0) {
     return (
       <div className={styles.pokemonNotFound}>
         <strong>Pokemon não encontrado</strong>
@@ -58,7 +58,7 @@ export function PokemonCards({ loading, data }: Props) {
           </p>
         </div>
         <ul className={styles.cards}>
-          {data?.pokemons.map((pokemon) => (
+          {data?.pokemons?.map((pokemon) => (
             <PokemonCard
               pokemon={pokemon}
               key={pokemon.id}

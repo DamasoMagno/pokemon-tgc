@@ -93,7 +93,6 @@ export type FavoritedPokemonProps = {
   images: {
     small: string;
   };
-  types: string[];
 };
 
 
@@ -108,4 +107,11 @@ export type PaginationProps = {
   totalPages: number;
   currentPage: number;
   totalCount: number;
+};
+
+export type FavoritePokemonSupabase = {
+  card_id: string;
+  card_name: string;
+  card_image: string;
+  user_id: string;
 };

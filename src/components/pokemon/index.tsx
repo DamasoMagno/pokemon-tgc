@@ -14,7 +14,7 @@ export function Pokemon() {
     isLoading,
     handleCloseSelectPokemonModal,
     isFavorite,
-    addPokemonToFavorites,
+    handleAddPokemonToFavorite,
   } = usePokemon();
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -34,81 +34,82 @@ export function Pokemon() {
   }, []);
 
   const handleCloseOutside = (event: any) => {
-    if (modalRef.current && !modalRef.current.contains(event.target))
-      handleCloseSelectPokemonModal();
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      handleCloseSelectPokemonModal()
+    }
   };
 
-  const handleAddPokemonToFavorites = () => addPokemonToFavorites(data);
+  const handleAddPokemonToFavorites = () => handleAddPokemonToFavorite(data);
 
-  return isLoading ? (
-    <Skeleton />
-  ) : (
+  return (
     <div className={styles.overlay} onClick={handleCloseOutside}>
-      <main className={styles.content} ref={modalRef}>
-        <header>
-          <button onClick={handleAddPokemonToFavorites}>
-            {isFavorite ? <Heart color="red" fill="red" /> : <Heart />}
-          </button>
-          <strong>{data?.name}</strong>
-          <button onClick={handleCloseSelectPokemonModal}>
-            <X />
-          </button>
-        </header>
-
-        <div>
-          <div className={styles.cardImage}>
-            <img
-              src={data?.images.large}
-              width={100}
-              alt="Imageg without pokemon"
-            />
-          </div>
-
-          <div className={styles.pokemonTypes}>
-            {data?.types.map((type) => (
-              <span key={type}>{type}</span>
-            ))}
-          </div>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <main className={styles.content} ref={modalRef}>
+          <header>
+            <button onClick={handleAddPokemonToFavorites}>
+              {isFavorite ? <Heart color="red" fill="red" /> : <Heart />}
+            </button>
+            <strong>{data?.name}</strong>
+            <button onClick={handleCloseSelectPokemonModal}>
+              <X />
+            </button>
+          </header>
 
           <div>
-            <div>
-              <span>HP</span>
-              <strong>{data?.hp}</strong>
+            <div className={styles.cardImage}>
+              <img
+                src={data?.images.large}
+                width={100}
+                alt="Imageg without pokemon"
+              />
             </div>
-            <div>
-              <span>Fraquezas</span>
-              {data?.weaknesses.map((weak) => (
-                <strong key={weak.type}>
-                  {weak.type} {weak.value}
-                </strong>
+
+            <div className={styles.pokemonTypes}>
+              {data?.types.map((type) => (
+                <span key={type}>{type}</span>
               ))}
-              <strong>{data?.hp}</strong>
-            </div>
-          </div>
-          <div 
-          className={styles.pokemonStatus}>
-            <div>
-              <header>
-                <img src={pokeBallImage} alt="Pokebola" />
-                <p>info</p>
-              </header>
-              <span>{data?.hp} HP</span>
             </div>
 
             <div>
-              <header>
-                <img src={pokeBallImage} alt="Pokebola" />
-                <p>info</p>
-              </header>
-             
+              <div>
+                <span>HP</span>
+                <strong>{data?.hp}</strong>
+              </div>
+              <div>
+                <span>Fraquezas</span>
+                {data?.weaknesses.map((weak) => (
+                  <strong key={weak.type}>
+                    {weak.type} {weak.value}
+                  </strong>
+                ))}
+                <strong>{data?.hp}</strong>
+              </div>
+            </div>
+            <div className={styles.pokemonStatus}>
+              <div>
+                <header>
+                  <img src={pokeBallImage} alt="Pokebola" />
+                  <p>info</p>
+                </header>
+                <span>{data?.hp} HP</span>
+              </div>
+
+              <div>
+                <header>
+                  <img src={pokeBallImage} alt="Pokebola" />
+                  <p>info</p>
+                </header>
+              </div>
+            </div>
+
+            <div className={styles.details}>
+              <p>{data?.flavorText}</p>
             </div>
           </div>
-
-          <div className={styles.details}>
-            <p>{data?.flavorText}</p>
-          </div>
-        </div>
-      </main>
+        </main>
+      )}
     </div>
   );
 }

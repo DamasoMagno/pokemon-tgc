@@ -62,7 +62,6 @@
 .cardImage {
   background-color: rgba(0, 0, 0, 1); 
   border-radius: 16px;
-  height: 260px;
   width: 200px;
   display: flex;
   overflow: hidden;
