@@ -10,7 +10,6 @@ import { useAuthStore } from "@/store/authStore";
 
 import { Search } from "@/components/search";
 import { Pagination } from "@/components/pagination";
-import { Pokemon } from "@/components/pokemon";
 import { PokemonCards } from "../pokemons/components/pokemon-cards";
 
 import styles from "./styles.module.css";
@@ -26,7 +25,7 @@ type PokemonFavoriteProps = {
 export function Favorites() {
   const { user, loadingUser } = useAuthStore();
   const { getLocalStorage } = useLocalStorage("@tcg:pokemons");
-  const { pokemonId, isFavorite } = usePokemon();
+  const { isFavorite } = usePokemon();
   const [searchParams, setSearchParams] = useSearchParams();
   const { page } = usePagination();
 
@@ -124,34 +123,30 @@ export function Favorites() {
 
   return (
     <>
-      <main className={styles.content}>
-        <div className={styles.filters}>
-          <Search
-            onSearch={handleSearchPokemon}
-            placeholder="Pesquise um pokemon"
-          />
-        </div>
+      <div className={styles.filters}>
+        <Search
+          onSearch={handleSearchPokemon}
+          placeholder="Pesquise um pokemon"
+        />
+      </div>
 
-        {PokemonCards({
-          data: {
-            pokemons: pokemons,
-            pagination: {
-              currentPage: page,
-              totalCount: totalCountPokemons ?? 0,
-              totalPages: formattedTotalPages,
-            },
+      {PokemonCards({
+        data: {
+          pokemons: pokemons,
+          pagination: {
+            currentPage: page,
+            totalCount: totalCountPokemons ?? 0,
+            totalPages: formattedTotalPages,
           },
-          loading: loadingUser || loading,
-        })}
+        },
+        loading: loadingUser || loading,
+      })}
 
-        {formattedTotalPages >= 1 && (
-          <footer>
-            <Pagination totalPages={formattedTotalPages} />
-          </footer>
-        )}
-      </main>
-
-      {!!pokemonId && <Pokemon />}
+      {formattedTotalPages >= 1 && (
+        <footer>
+          <Pagination totalPages={formattedTotalPages} />
+        </footer>
+      )}
     </>
   );
 }

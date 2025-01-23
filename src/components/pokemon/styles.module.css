@@ -15,6 +15,7 @@
   border-radius: 8px;
   top: 50%;
   left: 50%;
+  height: 80%;
   transform: translate(-50%, -50%);
   background-color: white;
 }
@@ -32,7 +33,7 @@
   }
 }
 
-.content > header {
+.content>header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,7 +44,7 @@
 .content header strong {
   flex: 1;
   text-align: center;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .content header button {
@@ -53,7 +54,7 @@
   cursor: pointer;
 }
 
-.content > div {
+.content>div {
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -61,9 +62,10 @@
 }
 
 .cardImage {
-  background-color: rgba(0, 0, 0, 1); 
+  background-color: rgba(0, 0, 0, 1);
   border-radius: 16px;
-  width: 200px;
+  height: 15rem;
+  width: 11rem;
   display: flex;
   overflow: hidden;
   justify-content: center;
@@ -74,8 +76,8 @@
 
 .cardImage img {
   width: 100%;
+  height: 100%;
   object-fit: cover;
-  background-color: rgba(248, 247, 216, 0.7);
 }
 
 .pokemonTypes {
@@ -84,6 +86,30 @@
   align-items: center;
   gap: 16px;
   justify-content: center;
+}
+
+.pokemonInfo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.pokemonInfo div {
+  background-color: rgba(0, 0, 0, .25);
+  padding: 1rem;
+  width: 100%;
+  border-radius: .25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.pokemonInfo div strong {
+  font-size: 1rem;
 }
 
 .pokemonTypes span {
@@ -118,7 +144,7 @@
 }
 
 .pokemonStatus div p {
-  font-size: 13px;
+  font-size: 0.75rem;
   color: rgba(29, 29, 29, 1);
   display: flex;
   align-items: center;
@@ -140,7 +166,7 @@
 }
 
 .pokemonStatus div span {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: rgba(102, 102, 102, 1);
 }
@@ -154,6 +180,6 @@
 }
 
 .details p {
-  font-size: 16px;
+  font-size: 1rem;
   color: rgba(29, 29, 29, 1);
 }

@@ -1,3 +1,18 @@
+:root {
+  --colorless: #A8A77A;
+  --darkness: #705746;
+  --dragon: #6F35FC;
+  --fairy: #D685AD;
+  --fighting: #C22E28;
+  --fire: #EE8130;
+  --grass: #7AC74C;
+  --lightning: #F7D02C;
+  --metal: #B7B7CE;
+  --psychic: #F95587;
+  --water: #6390F0;
+}
+
+
 * {
   padding: 0;
   margin: 0;

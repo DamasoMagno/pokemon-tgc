@@ -1,11 +1,22 @@
 import { Header } from "@/components/header";
+import { Pokemon } from "@/components/pokemon";
+import { usePokemon } from "@/context/pokemon";
 import { Outlet } from "react-router-dom";
 
-export function RootLayout(){
+import styles from "./styles.module.css";
+
+export function RootLayout() {
+  const { pokemonId } = usePokemon();
+
   return (
     <>
       <Header />
-      <Outlet />
+
+      <main className={styles.content}>
+        <Outlet />
+      </main>
+
+      {!!pokemonId && <Pokemon />}
     </>
-  )
+  );
 }

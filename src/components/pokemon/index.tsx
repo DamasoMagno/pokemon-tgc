@@ -49,11 +49,11 @@ export function Pokemon() {
         <main className={styles.content} ref={modalRef}>
           <header>
             <button onClick={handleAddPokemonToFavorites}>
-              {isFavorite ? <Heart color="red" fill="red" /> : <Heart />}
+              {isFavorite ? <Heart color="red" fill="red" size={16}/> : <Heart size={16}/>}
             </button>
             <strong>{data?.name}</strong>
             <button onClick={handleCloseSelectPokemonModal}>
-              <X />
+              <X size={16} color="black"/>
             </button>
           </header>
 
@@ -68,11 +68,13 @@ export function Pokemon() {
 
             <div className={styles.pokemonTypes}>
               {data?.types.map((type) => (
-                <span key={type}>{type}</span>
+                <span key={type} style={{
+                  background: `--${type.toLocaleLowerCase()}`
+                }}>{type}</span>
               ))}
             </div>
 
-            <div>
+            <div className={styles.pokemonInfo}>
               <div>
                 <span>HP</span>
                 <strong>{data?.hp}</strong>
@@ -80,9 +82,7 @@ export function Pokemon() {
               <div>
                 <span>Fraquezas</span>
                 {data?.weaknesses.map((weak) => (
-                  <strong key={weak.type}>
-                    {weak.type} {weak.value}
-                  </strong>
+                  <strong key={weak.type}>{weak.type} {weak.value}</strong>
                 ))}
                 <strong>{data?.hp}</strong>
               </div>

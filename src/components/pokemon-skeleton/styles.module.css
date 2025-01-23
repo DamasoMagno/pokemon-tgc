@@ -15,6 +15,7 @@
   border-radius: 8px;
   top: 50%;
   left: 50%;
+  height: 80%;
   transform: translate(-50%, -50%);
   background-color: white;
 }
@@ -81,8 +82,8 @@
 }
 
 .skeletonImage {
-  height: 264px;
-  width: 200px;
+  height: 15rem;
+  width: 11rem;
   margin: 0 auto;
   background-color: #e0e0e0;
   border-radius: 8px;

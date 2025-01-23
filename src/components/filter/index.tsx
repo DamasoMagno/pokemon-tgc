@@ -18,9 +18,9 @@ export function Order({ onSelect }: Props) {
         className={styles.selectPokemon}
         onChange={e => handleSelectOrder(e.target.value)}
       >
-        <option value="">Todos</option>
-        <option value="name">Nome alfabético</option>
-        <option value="-name">Nome alfabético</option>
+        <option value="">Não ordenar</option>
+        <option value="name">Ordem de A-Z</option>
+        <option value="-name">Ordem de Z-A</option>
       </select>
       <ChevronDown size={14} color="rgba(99, 101, 102, 1)"/>
     </div>

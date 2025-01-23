@@ -3,22 +3,17 @@ import { useSearchParams } from "react-router-dom";
 
 import { getAllPokemonCards } from "@/services/get-all-pokemons";
 
-import { usePokemon } from "@/context/pokemon";
-
 import { Search } from "@/components/search";
 import { Order } from "@/components/filter";
 import { Pagination } from "@/components/pagination";
 import { PokemonCards } from "./components/pokemon-cards";
-import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
-// import { usePaginationStore } from "@/store/paginationStore";
 import { usePagination } from "@/context/pagination";
 
 export function Pokemons() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { page } = usePagination();
-  const { pokemonId } = usePokemon();
 
   const pokemon = searchParams.get("pokemon") as string;
   const order = searchParams.get("order") as string;
@@ -65,20 +60,16 @@ export function Pokemons() {
 
   return (
     <>
-      <main className={styles.content}>
-        <div className={styles.filters}>
-          <Search onSearch={handleSearchPokemon} />
-          <Order onSelect={handleOrderPokemons} />
-        </div>
+      <div className={styles.filters}>
+        <Search onSearch={handleSearchPokemon} />
+        <Order onSelect={handleOrderPokemons} />
+      </div>
 
-        {PokemonCards({ data, loading })}
+      {PokemonCards({ data, loading })}
 
-        <footer>
-          <Pagination totalPages={data?.pagination.totalPages ?? 1} />
-        </footer>
-      </main>
-
-      {!!pokemonId && <Pokemon />}
+      <footer>
+        <Pagination totalPages={data?.pagination.totalPages ?? 1} />
+      </footer>
     </>
   );
 }
