@@ -1,5 +1,6 @@
 import { supabase } from "@/services/supabase";
 import { User } from "@supabase/supabase-js";
+import { toast } from "react-hot-toast"
 import { create } from "zustand";
 
 type UserProps = User | null;
@@ -30,6 +31,8 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
   signOut: async () => {
     try {
       await supabase.auth.signOut();
+
+      toast.success("Deslogado com sucesso.")
       set(() => ({ user: null }));
     } catch (error) {}
   },
@@ -39,6 +42,8 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
       await supabase.auth.signInWithOAuth({
         provider: "github",
       });
+
+      toast.success("Logado com sucesso.")
     } catch (error) {
       console.log(error);
     }

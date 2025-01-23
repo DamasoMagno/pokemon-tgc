@@ -1,5 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast"
 
 import { PaginationProvider } from "./context/pagination";
 import { PokemonProvider } from "./context/pokemon";
@@ -12,20 +13,21 @@ import { useEffect } from "react";
 const client = new QueryClient();
 
 export function App() {
-  const { checkUserSession } = useAuthStore()
+  const { checkUserSession } = useAuthStore();
 
   useEffect(() => {
-    checkUserSession()
-  }, [])
+    checkUserSession();
+  }, []);
 
   return (
     <QueryClientProvider client={client}>
       <BrowserRouter>
-          <PaginationProvider>
-            <PokemonProvider>
-              <Routes />
-            </PokemonProvider>
-          </PaginationProvider>
+        <PaginationProvider>
+          <PokemonProvider>
+            <Routes />
+            <Toaster position="top-right" />
+          </PokemonProvider>
+        </PaginationProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

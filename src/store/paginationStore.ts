@@ -9,11 +9,8 @@ type PaginationState = {
 };
 
 export const usePaginationStore = create<PaginationState>((set) => {
-  const [searchParams] = useSearchParams();
-  const initialPage = Number(searchParams.get("page")) || 1; 
-
   return {
-    page: initialPage,
+    page: 1,
 
     nextPage: () => {
       set((state) => {
