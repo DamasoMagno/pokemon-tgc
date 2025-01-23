@@ -5,7 +5,6 @@ import { User } from "@supabase/supabase-js";
 import { FavoritedPokemonProps, FavoritePokemonSupabase } from "@/types";
 import { supabase } from "@/services/supabase";
 
-import { usePagination } from "@/context/pagination";
 import { usePokemon } from "@/context/pokemon";
 import { useAuthStore } from "@/store/authStore";
 
@@ -16,6 +15,7 @@ import { PokemonCards } from "../pokemons/components/pokemon-cards";
 
 import styles from "./styles.module.css";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { usePaginationStore } from "@/store/paginationStore";
 
 type PokemonFavoriteProps = {
   user?: User | null;
@@ -26,7 +26,7 @@ export function Favorites() {
   const { user, loadingUser } = useAuthStore();
   const { getLocalStorage } = useLocalStorage("@tcg:pokemons");
   const { pokemonId, isFavorite } = usePokemon();
-  const { page } = usePagination();
+  const { page } = usePaginationStore();
 
   const [pokemon, setPokemon] = useState("");
   const [favoritePokemons, setFavoritePokemons] = useState<

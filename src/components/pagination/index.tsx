@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { usePagination } from "@/context/pagination";
-
 import styles from "./styles.module.css";
+import { usePaginationStore } from "@/store/paginationStore";
 
 type Props = {
   totalPages: number
@@ -11,7 +10,7 @@ type Props = {
 
 export function Pagination({ totalPages }: Props) {
   const { previousPage, setCurrentPage, nextPage, page } =
-    usePagination();
+    usePaginationStore();
   const [countPages, setCountPages] = useState<number[]>([]);
 
   const buttonCurrentPage = (selectedPage: number) => {

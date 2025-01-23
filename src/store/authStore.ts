@@ -18,19 +18,12 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
 
   checkUserSession: async () => {
     try {
-      set({ 
-        loadingUser: true,
-      });
-
       const { data } = await supabase.auth.getUser();
-
-      set(() => ({ user: data.user, loadingUser: false }));
+      set(() => ({ user: data.user }));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      set({ 
-        loadingUser: false
-      })
+      set({ loadingUser: false });
     }
   },
 
@@ -43,11 +36,9 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
 
   authenticate: async () => {
     try {
-      const { data } = await supabase.auth.signInWithOAuth({
+      await supabase.auth.signInWithOAuth({
         provider: "github",
       });
-
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

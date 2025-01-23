@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import { getAllPokemonCards } from "@/services/get-all-pokemons";
 
 import { usePokemon } from "@/context/pokemon";
-import { usePagination } from "@/context/pagination";
 
 import { Search } from "@/components/search";
 import { Order } from "@/components/filter";
@@ -13,10 +12,11 @@ import { PokemonCards } from "./components/pokemon-cards";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
+import { usePaginationStore } from "@/store/paginationStore";
 
 export function Pokemons() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page } = usePagination();
+  const { page } = usePaginationStore();
   const { pokemonId } = usePokemon();
 
   const pokemon = searchParams.get("pokemon") as string;
