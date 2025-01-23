@@ -12,11 +12,12 @@ import { PokemonCards } from "./components/pokemon-cards";
 import { Pokemon } from "@/components/pokemon";
 
 import styles from "./styles.module.css";
-import { usePaginationStore } from "@/store/paginationStore";
+// import { usePaginationStore } from "@/store/paginationStore";
+import { usePagination } from "@/context/pagination";
 
 export function Pokemons() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page } = usePaginationStore();
+  const { page } = usePagination();
   const { pokemonId } = usePokemon();
 
   const pokemon = searchParams.get("pokemon") as string;

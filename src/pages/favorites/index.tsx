@@ -15,7 +15,8 @@ import { PokemonCards } from "../pokemons/components/pokemon-cards";
 
 import styles from "./styles.module.css";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { usePaginationStore } from "@/store/paginationStore";
+import { usePagination } from "@/context/pagination";
+// import { usePaginationStore } from "@/store/paginationStore";
 
 type PokemonFavoriteProps = {
   user?: User | null;
@@ -26,7 +27,7 @@ export function Favorites() {
   const { user, loadingUser } = useAuthStore();
   const { getLocalStorage } = useLocalStorage("@tcg:pokemons");
   const { pokemonId, isFavorite } = usePokemon();
-  const { page } = usePaginationStore();
+  const { page } = usePagination();
 
   const [pokemon, setPokemon] = useState("");
   const [favoritePokemons, setFavoritePokemons] = useState<
