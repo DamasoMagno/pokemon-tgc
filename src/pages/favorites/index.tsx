@@ -106,7 +106,7 @@ export function Favorites() {
 
   const filteredPokemons = useMemo(() => {
     return favoritePokemons?.filter((currentPokemon) =>
-      currentPokemon.name.toLowerCase().includes(pokemon.toLowerCase())
+      currentPokemon.name.toLowerCase().includes(pokemon?.toLowerCase())
     );
   }, [pokemon, favoritePokemons, loadingUser]);
 
