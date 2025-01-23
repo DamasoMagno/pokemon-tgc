@@ -2,8 +2,9 @@
 
 ## Sobre o Projeto
 
-Este projeto foi desenvolvido como parte de um teste técnico. Ele consiste em consumir a API da plataforma Pokemon TCG para exibir cards de Pokémon.
-O projeto inclui funcionalidades para buscar por um Pokémon específico ou aplicar filtros, exibindo os resultados em um modal.
+Este projeto foi desenvolvido como parte de um teste técnico. Ele consiste em consumir a API do serviço Pokemon TCG para exibir cards de Pokémon.
+O projeto inclui desde a exibição das cartas pokemon, buscas por entidades, sistemas de like (conhecido como favoritos) e banco de dados offline e 
+online dependendo do usuário logado ou desloggado
 
 ## Funcionalidades Implementadas
 
@@ -15,7 +16,7 @@ O projeto inclui funcionalidades para buscar por um Pokémon específico ou apli
 - Autenticação usando Supabase e Github Provider.
 - Gerenciamento de contexto global para pokemon, usuário e paginação.
 - Persistência de dados no Local Storage ou Supabase.
-- Paginação de cartas dinamica e responsiva. 
+- Paginação de cartas dinamica e responsiva.
 
 ## Tecnologias Utilizadas
 
@@ -35,22 +36,27 @@ O projeto inclui funcionalidades para buscar por um Pokémon específico ou apli
 Siga os passos abaixo para configurar e rodar o projeto localmente:
 
 ### 1. Clone o Repositório
+
 ```bash
 git clone https://github.com/seu-usuario/pokemon-tcg-project.git
 ```
 
 ### 2. Acesse o Diretório do Projeto
+
 ```bash
 cd pokemon-tcg-project
 ```
 
 ### 3. Instale as Dependências
+
 Certifique-se de que o Node.js está instalado e, em seguida, execute:
+
 ```bash
 npm install
 ```
 
 ### 5. Execute o Projeto
+
 ```bash
 npm run dev
 ```
