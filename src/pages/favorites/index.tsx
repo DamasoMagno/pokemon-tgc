@@ -105,15 +105,19 @@ export function Favorites() {
   }, [isFavorite, data, user]);
 
   const filteredPokemons = useMemo(() => {
-    return favoritePokemons?.filter((currentPokemon) =>
-      currentPokemon.name.toLowerCase().includes(pokemon?.toLowerCase())
-    );
+    return pokemon
+      ? favoritePokemons?.filter((currentPokemon) =>
+          currentPokemon.name.toLowerCase().includes(pokemon?.toLowerCase())
+        )
+      : favoritePokemons;
   }, [pokemon, favoritePokemons, loadingUser]);
 
   const itemsPerPage = 20;
   const skipPokemons = (page - 1) * itemsPerPage;
   const currentPokemons = skipPokemons + itemsPerPage;
-  const formattedTotalPages = Math.ceil((filteredPokemons?.length ?? 0) / itemsPerPage);
+  const formattedTotalPages = Math.ceil(
+    (filteredPokemons?.length ?? 0) / itemsPerPage
+  );
   const totalCountPokemons = filteredPokemons?.length;
 
   const pokemons = filteredPokemons?.slice(skipPokemons, currentPokemons);
@@ -122,7 +126,10 @@ export function Favorites() {
     <>
       <main className={styles.content}>
         <div className={styles.filters}>
-          <Search onSearch={handleSearchPokemon} placeholder="Pesquise um pokemon" />
+          <Search
+            onSearch={handleSearchPokemon}
+            placeholder="Pesquise um pokemon"
+          />
         </div>
 
         {PokemonCards({
