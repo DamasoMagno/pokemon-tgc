@@ -31,10 +31,12 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
   signOut: async () => {
     try {
       await supabase.auth.signOut();
-
-      toast.success("Deslogado com sucesso.")
       set(() => ({ user: null }));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    } finally {
+      toast.success("Deslogado com sucesso.")
+    }
   },
 
   authenticate: async () => {
@@ -42,10 +44,10 @@ export const useAuthStore = create<AuthStoreProps>((set) => ({
       await supabase.auth.signInWithOAuth({
         provider: "github",
       });
-
-      toast.success("Logado com sucesso.")
     } catch (error) {
       console.log(error);
+    } finally {
+      toast.success("Logado com sucesso.")
     }
   },
 }));
