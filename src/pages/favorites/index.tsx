@@ -16,7 +16,7 @@ import { PokemonCards } from "../pokemons/components/pokemon-cards";
 import styles from "./styles.module.css";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { usePagination } from "@/context/pagination";
-// import { usePaginationStore } from "@/store/paginationStore";
+import { useSearchParams } from "react-router-dom";
 
 type PokemonFavoriteProps = {
   user?: User | null;
@@ -27,12 +27,27 @@ export function Favorites() {
   const { user, loadingUser } = useAuthStore();
   const { getLocalStorage } = useLocalStorage("@tcg:pokemons");
   const { pokemonId, isFavorite } = usePokemon();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page } = usePagination();
 
-  const [pokemon, setPokemon] = useState("");
+  const pokemon = searchParams.get("pokemon") as string;
+
   const [favoritePokemons, setFavoritePokemons] = useState<
     FavoritedPokemonProps[] | undefined
   >();
+
+  const handleSearchPokemon = (pokemon: string) => {
+    setSearchParams((state) => {
+      if (pokemon) {
+        state.set("pokemon", pokemon);
+        state.set("page", "1");
+      } else {
+        state.delete("pokemon");
+      }
+
+      return state;
+    });
+  };
 
   const pokemonIsFavorited = async ({
     storageMode,
@@ -107,7 +122,7 @@ export function Favorites() {
     <>
       <main className={styles.content}>
         <div className={styles.filters}>
-          <Search onSearch={setPokemon} placeholder="Pesquise um pokemon" />
+          <Search onSearch={handleSearchPokemon} placeholder="Pesquise um pokemon" />
         </div>
 
         {PokemonCards({
