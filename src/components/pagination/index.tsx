@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import styles from "./styles.module.css";
 import { usePagination } from "@/context/pagination";
-// import { usePaginationStore } from "@/store/paginationStore";
 
 type Props = {
   totalPages: number
