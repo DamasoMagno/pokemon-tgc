@@ -2,45 +2,50 @@ import styles from "./styles.module.css";
 
 export function Skeleton() {
   return (
-    <main className={`${styles.content} ${styles.skeleton}`}>
-      <header>
-        <div className={styles.skeletonTitle}></div>
-        <div className={styles.skeletonButton}></div>
-      </header>
-      <div>
-        <div className={styles.cardImage}>
-          <div className={styles.skeletonImage}></div>
+    <div className={styles.overlay}>
+      <div className={styles.content}>
+        <header className={styles.header}>
+          <div className={styles.circle}></div>
+          <div className={styles.title}></div>
+          <div className={styles.circle}></div>
+        </header>
+
+        <div className={styles.pokemonSummary}>
+          <div className={styles.cardImage}></div>
+          <ul className={styles.stats}>
+            <li>
+              <div className={styles.stat}></div>
+            </li>
+            <li>
+              <div className={styles.stat}></div>
+            </li>
+          </ul>
         </div>
 
-        <div className={styles.pokemonTypes}>
-          {[...Array(3)].map((_, index) => (
-            <span key={index} className={styles.skeletonBadge}></span>
-          ))}
-        </div>
-
-        <div className={styles.pokemonStatus}>
-          <div>
-            <header>
-              <div className={styles.skeletonIcon}></div>
-              <div className={styles.skeletonText}></div>
-            </header>
-            <div className={styles.skeletonText}></div>
+        <div className={styles.pokemonDetails}>
+          <div className={styles.detail}>
+            <div className={styles.label}></div>
+            <ul className={styles.items}>
+              <li className={styles.item}></li>
+              <li className={styles.item}></li>
+            </ul>
           </div>
-
-          <div>
-            <header>
-              <div className={styles.skeletonIcon}></div>
-              <div className={styles.skeletonText}></div>
-            </header>
-            <div className={styles.skeletonText}></div>
+          <div className={styles.detail}>
+            <div className={styles.label}></div>
+            <ul className={styles.items}>
+              <li className={styles.item}></li>
+              <li className={styles.item}></li>
+            </ul>
           </div>
-        </div>
-
-        <div className={styles.details}>
-          <div className={styles.skeletonParagraph}></div>
-          <div className={styles.skeletonParagraph}></div>
+          <div className={styles.detail}>
+            <div className={styles.label}></div>
+            <ul className={styles.items}>
+              <li className={styles.item}></li>
+              <li className={styles.item}></li>
+            </ul>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

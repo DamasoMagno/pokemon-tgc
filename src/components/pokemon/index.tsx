@@ -4,8 +4,6 @@ import { Heart, X } from "lucide-react";
 import { usePokemon } from "@/context/pokemon";
 import { Skeleton } from "../pokemon-skeleton";
 
-import pokeBallImage from "@/assets/pokeball-icon.svg";
-
 import styles from "./styles.module.css";
 
 export function Pokemon() {
@@ -35,7 +33,7 @@ export function Pokemon() {
 
   const handleCloseOutside = (event: any) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
-      handleCloseSelectPokemonModal()
+      handleCloseSelectPokemonModal();
     }
   };
 
@@ -49,63 +47,75 @@ export function Pokemon() {
         <main className={styles.content} ref={modalRef}>
           <header>
             <button onClick={handleAddPokemonToFavorites}>
-              {isFavorite ? <Heart color="red" fill="red" size={16}/> : <Heart size={16}/>}
+              {isFavorite ? (
+                <Heart color="red" fill="red" size={16} />
+              ) : (
+                <Heart size={16} />
+              )}
             </button>
             <strong>{data?.name}</strong>
             <button onClick={handleCloseSelectPokemonModal}>
-              <X size={16} color="black"/>
+              <X size={16} color="black" />
             </button>
           </header>
 
           <div>
-            <div className={styles.cardImage}>
-              <img
-                src={data?.images.large}
-                width={100}
-                alt="Imageg without pokemon"
-              />
-            </div>
-
-            <div className={styles.pokemonTypes}>
-              {data?.types.map((type) => (
-                <span key={type} style={{
-                  background: `--${type.toLocaleLowerCase()}`
-                }}>{type}</span>
-              ))}
-            </div>
-
-            <div className={styles.pokemonInfo}>
-              <div>
-                <span>HP</span>
-                <strong>{data?.hp}</strong>
+            <div className={styles.pokemonSummary}>
+              <div className={styles.cardImage}>
+                <img
+                  src={data?.images.large}
+                  width={100}
+                  alt="Imageg without pokemon"
+                />
               </div>
-              <div>
+
+              <ul>
+                {data?.rarity && (
+                  <li>
+                    <span>Raridade</span>
+                    <strong>{data?.rarity}</strong>
+                  </li>
+                )}
+
+                {data?.hp && (
+                  <li>
+                    <span>HP</span>
+                    <strong>{data?.hp}</strong>
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            <div className={styles.pokemonDetails}>
+              <div className={styles.pokemonTypes}>
+                <span>Tipos</span>
+
+                <ul>
+                  {data?.types.map((type) => (
+                    <li key={type}>{type}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className={styles.pokemonTypes}>
+                <span>Ataques</span>
+
+                <ul>
+                  {data?.attacks.map((attack) => (
+                    <li key={attack.name}>{attack.name}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className={styles.pokemonTypes}>
                 <span>Fraquezas</span>
-                {data?.weaknesses.map((weak) => (
-                  <strong key={weak.type}>{weak.type} {weak.value}</strong>
-                ))}
-                <strong>{data?.hp}</strong>
-              </div>
-            </div>
-            <div className={styles.pokemonStatus}>
-              <div>
-                <header>
-                  <img src={pokeBallImage} alt="Pokebola" />
-                  <p>info</p>
-                </header>
-                <span>{data?.hp} HP</span>
-              </div>
 
-              <div>
-                <header>
-                  <img src={pokeBallImage} alt="Pokebola" />
-                  <p>info</p>
-                </header>
+                <ul>
+                  {data?.weaknesses.map((weakness) => (
+                    <li key={weakness.type}>{weakness.type}</li>
+                  ))}
+                </ul>
               </div>
-            </div>
-
-            <div className={styles.details}>
-              <p>{data?.flavorText}</p>
             </div>
           </div>
         </main>
