@@ -1,64 +1,76 @@
-# Pokemon TCG Project
+# Documentação Técnica — Pokemon TCG
 
-## Sobre o Projeto
+## Visão Geral
 
-Este projeto foi desenvolvido como parte de um teste técnico. Ele consiste em consumir a API do serviço Pokemon TCG para exibir cards de Pokémon.
-O projeto inclui desde a exibição das cartas pokemon, buscas por entidades, sistemas de like (conhecido como favoritos) e banco de dados offline e 
-online dependendo do usuário logado ou desloggado
+**Nome do projeto:** Pokemon TCG  
+**Propósito:** disponibilizar uma interface web para consulta de cartas Pokémon e gerenciamento de favoritos.  
+**Função principal:** consumir dados da API Pokémon TCG, permitir busca e ordenação de cartas, exibir detalhes em modal e persistir favoritos em modo offline (Local Storage) ou online (Supabase), conforme estado de autenticação do usuário.
 
-## Funcionalidades Implementadas
+## Stack Tecnológica
 
-- Listagem de cards de Pokémon obtidos da API Pokemon TCG.
-- Busca por um Pokémon específico utilizando nome.
-- Filtros para refinar a exibição de cards baseado em ordem alfabética.
-- Exibição detalhada de informações do Pokémon em um modal.
-- Sistema de favoritar pokemon.
-- Autenticação usando Supabase e Github Provider.
-- Gerenciamento de contexto global para pokemon, usuário e paginação.
-- Persistência de dados no Local Storage ou Supabase.
-- Paginação de cartas dinamica e responsiva.
+### Linguagens
+- TypeScript
+- JavaScript
+- CSS (incluindo módulos CSS)
 
-## Tecnologias Utilizadas
+### Frameworks e bibliotecas principais
+- **Front-end:** React 18
+- **Roteamento:** React Router DOM
+- **Gerenciamento de estado assíncrono/cache:** TanStack React Query
+- **Gerenciamento de estado global:** Zustand
+- **HTTP client:** Axios
+- **Notificações:** react-hot-toast
+- **Ícones:** lucide-react
 
-- [**React**](https://reactjs.org/): Biblioteca para construção de interfaces.
-- [**Typescript**](https://www.typescriptlang.org/): Superset do JavaScript para adicionar tipagem estática.
-- [**React Query**](https://react-query.tanstack.com/): Gerenciamento de estado assíncrono.
-- [**Supabase**](https://supabase.com/): Backend como serviço para persistência de dados.
-- [**React Router Dom**](https://reactrouter.com/): Biblioteca para roteamento de páginas.
-- [**API Pokemon TCG**](https://pokemontcg.io/): Fonte dos dados dos cards de Pokémon.
-- [**Lucide React**](https://lucide.dev/): Biblioteca de ícones para melhorar a interface.
-- [**Zustand**](https://github.com/pmndrs/zustand): Biblioteca para gerenciamento de estado.
-- **Local Storage**: Para armazenar dados localmente no navegador.
-- **Axios**: Biblioteca para fazer requisições HTTP.
+### Banco(s) de dados
+- **Supabase (PostgreSQL gerenciado):** persistência online da tabela de favoritos (`favorite`)
+- **Local Storage (navegador):** persistência offline de favoritos para usuários não autenticados
 
-## Como Instalar e Executar o Projeto
+### Build, versionamento e infraestrutura
+- **Build tool / bundler:** Vite
+- **Compilação TypeScript:** `tsc`
+- **Linting:** ESLint
+- **Versionamento:** Git (repositório GitHub)
+- **Infraestrutura de hospedagem:** Vercel (configuração de rewrite em `vercel.json`)
 
-Siga os passos abaixo para configurar e rodar o projeto localmente:
+## Integrações Externas
 
-### 1. Clone o Repositório
+- **Pokémon TCG API (`https://api.pokemontcg.io/v2`)**  
+  Fonte principal dos dados de cartas (listagem, busca, ordenação e detalhes).
 
-```bash
-git clone https://github.com/seu-usuario/pokemon-tcg-project.git
-```
+- **Supabase (`https://ndprdrbfcmmgrbsvbsrn.supabase.co`)**  
+  Serviço de backend para autenticação e persistência online de favoritos.
 
-### 2. Acesse o Diretório do Projeto
+- **GitHub OAuth Provider (via Supabase Auth)**  
+  Provedor de autenticação para login de usuários no sistema.
 
-```bash
-cd pokemon-tcg-project
-```
+## Arquitetura do Sistema
 
-### 3. Instale as Dependências
+### Padrão arquitetural adotado
+- Aplicação **front-end monolítica SPA** (Single Page Application) em React.
+- Organização por camadas de responsabilidade:
+  - **UI/Pages/Components**
+  - **Context/State (React Context + Zustand)**
+  - **Data access (services com Axios e Supabase)**
 
-Certifique-se de que o Node.js está instalado e, em seguida, execute:
+### Fluxo de dados (descrição textual)
+1. Usuário interage com páginas (`/` e `/favorites`) e componentes de busca/filtro/paginação.
+2. Parâmetros de busca/paginação são refletidos na URL (`useSearchParams`) e contexto de paginação.
+3. React Query executa chamadas de dados:
+   - Cartas: API Pokémon TCG via `api.ts`
+   - Favoritos online: Supabase via client `supabase.ts`
+4. Estado de autenticação é controlado no store Zustand (`authStore.ts`), com sessão validada no carregamento da aplicação.
+5. Em ações de favoritar:
+   - **Usuário autenticado:** grava/remove favorito no Supabase
+   - **Usuário não autenticado:** grava/remove favorito no Local Storage
+6. Atualizações de favoritos invalidam cache React Query para manter consistência da interface.
 
-```bash
-npm install
-```
+### Justificativa arquitetural
+- A combinação **React Query + serviços isolados** reduz acoplamento entre UI e origem de dados.
+- O uso de **Zustand** para autenticação simplifica o estado global com baixa complexidade.
+- A estratégia de persistência híbrida (online/offline) mantém continuidade de uso com e sem login.
 
-### 5. Execute o Projeto
+## Contato do Desenvolvedor
 
-```bash
-npm run dev
-```
-
-O projeto será iniciado e estará acessível em `http://localhost:5173`.
+- **Nome:** Dâmaso Magno  
+- **Contato:** https://github.com/DamasoMagno
